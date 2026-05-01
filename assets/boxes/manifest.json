@@ -1,0 +1,8 @@
+{
+  "packs": [
+    { "id": "default", "name": "Default (warna polos)", "dir": "" },
+    { "id": "nature",  "name": "Element / Alam",       "dir": "nature/" },
+    { "id": "recycle", "name": "Sampah / Recycle",     "dir": "recycle/" }
+  ],
+  "kinds": ["normal","bonus","minus","penalty","freeze","slow","shock","boost"]
+}
