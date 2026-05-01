@@ -12,4 +12,5 @@ seed Room 1-5 dengan password `room1`..`room5`.
 ## ⚠️ Catatan keamanan (sengaja tidak diperketat)
 
 - Login pakai Nama+NPM tanpa password hash (sesuai versi original).
+- cara tambah bgm taruh di folder bgm dan edit di manifest.json
 # ClickTheCircle
