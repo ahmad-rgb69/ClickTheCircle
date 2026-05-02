@@ -11,65 +11,8 @@ $config = $config ?? require __DIR__ . '/../config.php';
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?= e($title ?? 'CL!CK THE CIRCLE — RRR') ?></title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        bgpage:     '#6b6f78',
-        panel:      '#9aa0a6',
-        panel2:     '#b3b8bd',
-        control:    '#d9dcdf',
-        controlHi:  '#e6e9ec',
-        ink:        '#1a1a1a',
-        inkMuted:   '#4b4f55',
-        accentRed:  '#d83a3a',
-        accentGreen:'#2ecc40',
-        accentYel:  '#ffd23f',
-      },
-      boxShadow: {
-        panel: '0 2px 0 rgba(0,0,0,.25), 0 6px 18px rgba(0,0,0,.18)',
-        btn:   '0 2px 0 rgba(0,0,0,.35)',
-        inset1:'inset 0 2px 6px rgba(0,0,0,.1)',
-      },
-      fontFamily: {
-        pixel: ['"Press Start 2P"', '"Courier New"', 'monospace'],
-        body:  ['Inter', '"Segoe UI"', 'system-ui', 'sans-serif'],
-      }
-    }
-  }
-};
-</script>
-<style type="text/tailwindcss">
-  @layer base {
-    body {
-      @apply font-body text-ink bg-bgpage min-h-screen flex flex-col items-center px-4 py-8;
-      background-image:
-        radial-gradient(rgba(0,0,0,.08) 1px, transparent 1px),
-        radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px);
-      background-size: 4px 4px, 4px 4px;
-      background-position: 0 0, 2px 2px;
-    }
-  }
-  @layer components {
-    .panel-box   { @apply w-full max-w-[960px] bg-panel border border-ink shadow-panel; }
-    .panel2-box  { @apply w-full max-w-[960px] bg-panel2 border border-ink shadow-panel; }
-    .h-title     { @apply panel2-box text-center text-2xl md:text-3xl font-extrabold tracking-wide px-5 py-3 mb-3; }
-    .h-section   { @apply panel2-box text-xl md:text-2xl font-extrabold tracking-wide px-4 py-2 mb-3; }
-    .field       { @apply block w-full mt-1 px-3 py-2 bg-control border border-ink rounded-sm outline-none focus:bg-white focus:ring-2 focus:ring-black/30; }
-    .btn         { @apply inline-flex items-center justify-center font-bold uppercase tracking-wide bg-control hover:bg-controlHi border border-ink rounded-sm px-5 py-2 shadow-btn active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed min-h-[40px]; }
-    .btn-danger  { @apply btn bg-accentRed text-white hover:brightness-110; }
-    .flash       { @apply panel-box bg-green-200 px-4 py-3 my-3 font-semibold; }
-    .flash-err   { @apply panel-box bg-red-200 px-4 py-3 my-3 font-semibold; }
-    .chip        { @apply panel-box flex items-center gap-3 px-4 py-2; }
-    .chat-box    { @apply w-full max-w-[960px] bg-control border border-ink rounded-sm p-4 overflow-y-auto shadow-inset1; }
-    .chat-box p  { @apply m-1 flex items-center gap-2; }
-    .chat-box img{ @apply border border-ink bg-white; }
-    .room-card   { @apply panel2-box rounded-sm p-4 flex flex-col gap-2 max-w-none; }
-    .room-card h4{ @apply m-0 text-lg font-extrabold text-center px-2 py-1 bg-control border border-ink; }
-  }
-</style>
+<script type="module" src="http://localhost:5173/@vite/client"></script>
+    <link rel="stylesheet" href="http://localhost:5173/assets/app.css">
 <script>
 // WS URL otomatis pakai hostname yang sama dengan halaman.
 (function () {
