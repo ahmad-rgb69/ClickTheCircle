@@ -24,7 +24,7 @@ $np     = max(1, min(4, (int)($body['num_players'] ?? 1)));
 $dur    = max(1, min(600, (int)($body['duration_sec'] ?? 90)));
 $scores = $body['scores'] ?? [];
 
-if (!in_array($roomId, Room::VALID_IDS, true) || !in_array($diff, ['normal','hard'], true) || !is_array($scores)) {
+if (!in_array($roomId, Room::VALID_IDS, true) || !in_array($diff, ['easy','normal','hard','indonesian'], true) || !is_array($scores)) {
     http_response_code(400);
     echo json_encode(['ok' => false, 'err' => 'invalid params']); exit;
 }

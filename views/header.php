@@ -53,20 +53,20 @@ tailwind.config = {
     }
   }
   @layer components {
-    .panel-box   { @apply w-full max-w-[960px] bg-panel border border-ink shadow-panel; }
-    .panel2-box  { @apply w-full max-w-[960px] bg-panel2 border border-ink shadow-panel; }
+    .panel-box   { @apply w-full max-w-[960px] bg-panel border border-ink shadow-panel rounded-2xl; }
+    .panel2-box  { @apply w-full max-w-[960px] bg-panel2 border border-ink shadow-panel rounded-2xl; }
     .h-title     { @apply panel2-box text-center text-2xl md:text-3xl font-extrabold tracking-wide px-5 py-3 mb-3; }
     .h-section   { @apply panel2-box text-xl md:text-2xl font-extrabold tracking-wide px-4 py-2 mb-3; }
-    .field       { @apply block w-full mt-1 px-3 py-2 bg-control border border-ink rounded-sm outline-none focus:bg-white focus:ring-2 focus:ring-black/30; }
-    .btn         { @apply inline-flex items-center justify-center font-bold uppercase tracking-wide bg-control hover:bg-controlHi border border-ink rounded-sm px-5 py-2 shadow-btn active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed min-h-[40px]; }
+    .field       { @apply block w-full mt-1 px-3 py-2 bg-control border border-ink rounded-xl outline-none focus:bg-white focus:ring-2 focus:ring-black/30; }
+    .btn         { @apply inline-flex items-center justify-center font-bold uppercase tracking-wide bg-control hover:bg-controlHi border border-ink rounded-xl px-5 py-2 shadow-btn active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed min-h-[40px]; }
     .btn-danger  { @apply btn bg-accentRed text-white hover:brightness-110; }
     .flash       { @apply panel-box bg-green-200 px-4 py-3 my-3 font-semibold; }
     .flash-err   { @apply panel-box bg-red-200 px-4 py-3 my-3 font-semibold; }
     .chip        { @apply panel-box flex items-center gap-3 px-4 py-2; }
-    .chat-box    { @apply w-full max-w-[960px] bg-control border border-ink rounded-sm p-4 overflow-y-auto shadow-inset1; }
+    .chat-box    { @apply w-full max-w-[960px] bg-control border border-ink rounded-xl p-4 overflow-y-auto shadow-inset1; }
     .chat-box p  { @apply m-1 flex items-center gap-2; }
     .chat-box img{ @apply border border-ink bg-white; }
-    .room-card   { @apply panel2-box rounded-sm p-4 flex flex-col gap-2 max-w-none; }
+    .room-card   { @apply panel2-box rounded-xl p-4 flex flex-col gap-2 max-w-none; }
     .room-card h4{ @apply m-0 text-lg font-extrabold text-center px-2 py-1 bg-control border border-ink; }
   }
 </style>
@@ -96,12 +96,12 @@ if (!empty($_SESSION['login'])):
        aria-label="Player info sidebar">
     <button type="button" id="user-sidebar-close" class="absolute right-2 top-2 lg:hidden text-xl font-bold leading-none px-2 py-1" aria-label="Close profile">×</button>
 
-    <div class="font-pixel text-xs text-white text-center bg-ink/80 border border-ink rounded-sm py-2"
+    <div class="font-pixel text-xs text-white text-center bg-ink/80 border border-ink rounded-xl py-2"
          style="text-shadow: 1px 1px 0 #000;">
         PLAYER INFO
     </div>
 
-    <div class="flex flex-col items-center gap-2 bg-control border border-ink rounded-sm p-3 shadow-inset1">
+    <div class="flex flex-col items-center gap-2 bg-control border border-ink rounded-xl p-3 shadow-inset1">
         <div class="text-center">
             <div class="text-xs text-inkMuted">Logged in as</div>
             <div class="font-extrabold text-base break-all"><?= e($__sb_nama) ?></div>
@@ -109,8 +109,8 @@ if (!empty($_SESSION['login'])):
     </div>
 
     <!-- ===== Online users (live via WebSocket) ===== -->
-    <div class="flex-1 min-h-0 flex flex-col bg-control border border-ink rounded-sm p-2 shadow-inset1">
-        <div class="font-pixel text-[10px] text-ink text-center bg-panel2 border border-ink rounded-sm py-1 mb-2">
+    <div class="flex-1 min-h-0 flex flex-col bg-control border border-ink rounded-xl p-2 shadow-inset1">
+        <div class="font-pixel text-[10px] text-ink text-center bg-panel2 border border-ink rounded-xl py-1 mb-2">
             ONLINE (<span id="online-users-count">0</span>)
         </div>
         <div id="online-users-list" class="flex flex-col gap-1 overflow-y-auto pr-1 text-sm">
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 <div class="w-full max-w-[960px] text-center">
-    <div class="inline-block bg-panel border border-ink shadow-panel px-7 py-4 my-2 mb-6 font-pixel text-2xl md:text-3xl tracking-[2px] text-white"
+    <div class="inline-block bg-panel border border-ink shadow-panel rounded-2xl px-7 py-4 my-2 mb-6 font-pixel text-2xl md:text-3xl tracking-[2px] text-white"
          style="text-shadow: 2px 2px 0 #000;">
         CL<span class="text-accentRed">!</span>CK THE CIRCLE
     </div>

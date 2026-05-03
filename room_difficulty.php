@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(['ok' => false, 'err' => 'only owner']); exit;
     }
     $new = (string)($_POST['difficulty'] ?? '');
-    if (!in_array($new, ['normal','hard'], true)) {
+    if (!in_array($new, ['easy','normal','hard','indonesian'], true)) {
         http_response_code(400);
         echo json_encode(['ok' => false, 'err' => 'invalid difficulty']); exit;
     }

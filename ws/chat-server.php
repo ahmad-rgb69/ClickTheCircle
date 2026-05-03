@@ -121,7 +121,7 @@ class ChatServer implements MessageComponentInterface
                 $this->roomPlaying[$rid] = true;
                 room_playing_set($rid);
             }
-        } elseif ($msgType === 'game_ended') {
+        } elseif ($msgType === 'game_ended' || $msgType === 'game_reset') {
             $rid = (int)($data['room_id'] ?? 0);
             if (in_array($rid, self::VALID_ROOMS, true)) {
                 unset($this->roomPlaying[$rid]);

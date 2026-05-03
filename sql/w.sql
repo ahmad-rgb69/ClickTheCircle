@@ -157,8 +157,8 @@ USE rrr;
 SET @c := (SELECT COUNT(*) FROM information_schema.COLUMNS
            WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='room_status' AND COLUMN_NAME='difficulty');
 SET @s := IF(@c=0,
-  "ALTER TABLE room_status ADD COLUMN difficulty ENUM('normal','hard') NOT NULL DEFAULT 'normal' AFTER cooldown_until",
-  'SELECT 1');
+  "ALTER TABLE room_status ADD COLUMN difficulty ENUM('easy','normal','hard','indonesian') NOT NULL DEFAULT 'normal' AFTER cooldown_until",
+  "ALTER TABLE room_status MODIFY COLUMN difficulty ENUM('easy','normal','hard','indonesian') NOT NULL DEFAULT 'normal'");
 PREPARE st FROM @s; EXECUTE st; DEALLOCATE PREPARE st;
 
 SET @c := (SELECT COUNT(*) FROM information_schema.COLUMNS
@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS game_sessions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     room_id INT NOT NULL,
     owner_id INT NULL,
-    difficulty ENUM('normal','hard') NOT NULL DEFAULT 'normal',
+    difficulty ENUM('easy','normal','hard','indonesian') NOT NULL DEFAULT 'normal',
     num_players TINYINT NOT NULL DEFAULT 1,
     duration_sec INT NOT NULL DEFAULT 90,
     started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

@@ -48,6 +48,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Seat::clearBots($db, $roomId);
             echo json_encode(['ok' => true, 'seats' => Seat::listForRoom($db, $roomId)]); exit;
 
+        case 'kick':
+            if (!$isOwner) { http_response_code(403); echo json_encode(['ok'=>false,'err'=>'only owner']); exit; }
+            $target = (int)($_POST['user_id'] ?? 0);
+            if ($target <= 0 || $target === $myId) {
+                http_response_code(400);
+                echo json_encode(['ok'=>false,'err'=>'invalid target']); exit;
+            }
+            Seat::leaveAll($db, $roomId, $target);
+            echo json_encode(['ok' => true, 'kicked_user_id' => $target, 'seats' => Seat::listForRoom($db, $roomId)]); exit;
+
         default:
             http_response_code(400);
             echo json_encode(['ok' => false, 'err' => 'unknown action']); exit;

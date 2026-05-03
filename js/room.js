@@ -86,6 +86,17 @@
       if (typeof window.__SEAT_REFRESH__ === "function") window.__SEAT_REFRESH__();
     }
 
+    // Owner kick non-owner
+    if (data.type === "user_kicked" && Number(data.room_id) === cfg.roomId) {
+      if (Number(data.target_user_id) === cfg.myId && cfg.role !== "owner") {
+        alert("Kamu di-kick oleh owner. Dialihkan ke lobby.");
+        allowSystemNavigate = true;
+        window.location.href = cfg.lobbyUrl;
+        return;
+      }
+      if (typeof window.__SEAT_REFRESH__ === "function") window.__SEAT_REFRESH__();
+    }
+
     // Pesan game (relay) — diteruskan via CustomEvent ke game.js.
     // Whitelist prefix: game_*, sfx_*, bgm_*  (semua harus lewat filter room).
     if (typeof data.type === "string"

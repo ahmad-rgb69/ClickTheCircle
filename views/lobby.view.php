@@ -19,8 +19,8 @@ $presetItems   = avatar_presets_list();
     <span class="font-bold underline underline-offset-4">Profile</span>
 </button>
 
-<details class="panel-box mt-3 mb-3">
-    <summary class="cursor-pointer select-none px-4 py-2 font-bold bg-panel2 border-b border-ink">
+<details class="panel-box mt-1 mb-1 rounded">
+    <summary class="cursor-pointer select-none px-4 py-2 font-bold bg-panel2 border border-ink rounded">
         Manage My Account
     </summary>
     <div class="p-4">

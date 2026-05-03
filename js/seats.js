@@ -67,6 +67,18 @@
         btn.disabled = isRoomLocked();
         btn.onclick = () => { if (!isRoomLocked()) act('take', { seat: s.seat_no }); };
         actions.appendChild(btn);
+      } else if (cfg.isOwner && s.user_id && !isMine) {
+        // Owner bisa kick non-owner yang sedang duduk di seat.
+        const btn = document.createElement('button');
+        btn.className = 'btn-danger text-xs px-2 py-1';
+        btn.textContent = 'Kick';
+        btn.disabled = isRoomLocked();
+        btn.onclick = () => {
+          if (isRoomLocked()) return;
+          if (!confirm('Kick ' + (s.user_name || 'user') + ' dari room?')) return;
+          kickUser(s.user_id, s.user_name || '');
+        };
+        actions.appendChild(btn);
       }
       grid.appendChild(card);
     });
@@ -94,6 +106,33 @@
       .then(r => r.json())
       .then(d => {
         if (d && d.seats) render(d.seats);
+        broadcastChange();
+      });
+  }
+
+  function kickUser(userId, userName) {
+    const fd = new FormData();
+    fd.append('room_id', cfg.roomId);
+    fd.append('action', 'kick');
+    fd.append('user_id', userId);
+    return fetch(cfg.seatUrl, { method: 'POST', body: fd, credentials: 'same-origin' })
+      .then(r => r.json())
+      .then(d => {
+        if (!d || !d.ok) {
+          alert('Gagal kick: ' + ((d && d.err) || 'unknown error'));
+          return;
+        }
+        if (d.seats) render(d.seats);
+        // Broadcast WS supaya target kena redirect & seat panel di klien lain refresh.
+        const ws = window.__ROOM_WS__;
+        if (ws && ws.readyState === 1) {
+          ws.send(JSON.stringify({
+            type: 'user_kicked',
+            room_id: cfg.roomId,
+            target_user_id: Number(userId),
+            target_name: String(userName || ''),
+          }));
+        }
         broadcastChange();
       });
   }

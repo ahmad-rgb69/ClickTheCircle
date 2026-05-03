@@ -18,6 +18,10 @@ if (($_SESSION['role_room'] ?? '') === 'owner' && !empty($_SESSION['room_id'])) 
     Room::releaseIfOwner($db, (int)$_SESSION['room_id'], $myId);
     unset($_SESSION['role_room'], $_SESSION['room_id']);
 }
+// Non-owner masuk lobby (mis. di-kick) → bersihkan flag room di sesi.
+if (($_SESSION['role_room'] ?? '') !== 'owner') {
+    unset($_SESSION['role_room'], $_SESSION['room_id']);
+}
 
 User::updatePresence($db, $myId, 'lobby', null);
 

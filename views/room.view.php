@@ -6,11 +6,13 @@
  */
 require_once __DIR__ . '/../helpers/avatar.php';
 require_once __DIR__ . '/../models/Room.php';
+require_once __DIR__ . '/../helpers/room_playing.php';
 include __DIR__ . '/header.php';
 $isOwner   = (($role ?? '') === 'owner');
 // Nama room (Dark, Lux, Neon, Frost, Ember) — bukan angka.
 $roomName  = Room::nameFor((int)$roomId);
 $roleLabel = $isOwner ? 'owner' : 'guest';
+$wasPlaying = room_is_playing((int)$roomId);
 ?>
 <h1 class="h-title">Private Room <?= e($roomName) ?> (Status: <?= e($roleLabel) ?>)</h1>
 <button type="button" id="room-profile-open"
@@ -46,8 +48,10 @@ $roleLabel = $isOwner ? 'owner' : 'guest';
 
         <label class="text-sm font-bold">Difficulty
             <select id="game-difficulty" class="field mt-0 inline-block w-auto ml-1" <?= $isOwner ? '' : 'disabled' ?>>
+                <option value="easy">Easy</option>
                 <option value="normal" selected>Normal</option>
                 <option value="hard">Hard</option>
+                <option value="indonesian">Indonesian (Insane)</option>
             </select>
             <?php if (!$isOwner): ?>
                 <span class="text-xs text-inkMuted ml-1">(set by owner)</span>
@@ -113,7 +117,6 @@ $roleLabel = $isOwner ? 'owner' : 'guest';
         <ul class="list-disc pl-5 mt-1 space-y-0.5">
             <li><strong>Desktop:</strong> WASD to move, Space for turbo.</li>
             <li><strong>Mobile:</strong> analog joystick at bottom-left, Turbo button (hold) at bottom-right.</li>
-            <li>Tap the yellow boxes for points. The owner can pick the duration (30 / 60 / 90 seconds).</li>
         </ul>
     </details>
 </div>
@@ -190,6 +193,16 @@ $roleLabel = $isOwner ? 'owner' : 'guest';
   body.is-touch #floating-controls{ display:flex; }
   body.is-touch #mobile-joystick{ display:block; }
 
+  /* Beri ruang bawah agar konten (arena, status, tombol Leave) tidak
+     tertutup joystick (kiri-bawah ~140px + 24px) dan floating buttons
+     (kanan-bawah). Hanya aktif di device touch. */
+  body.is-touch{
+    padding-bottom: calc(180px + env(safe-area-inset-bottom)) !important;
+  }
+  @media (min-width: 768px){
+    body.is-touch{ padding-bottom: calc(24px + env(safe-area-inset-bottom)) !important; }
+  }
+
   /* ===== End-Game Modal ===== */
   .end-modal{ position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; }
   .end-modal.hidden{ display:none; }
@@ -210,6 +223,11 @@ $roleLabel = $isOwner ? 'owner' : 'guest';
   .end-modal__scores li.is-winner{ background:linear-gradient(90deg,#f4d35e,#ffba49); color:#1a1a1a; font-weight:800; }
   .end-modal__actions{ display:flex; gap:8px; justify-content:flex-end; }
   .end-modal__hint{ margin:10px 0 0; text-align:center; font-size:11px; color:#888; }
+  /* ===== Game screen lock (saat Start ditekan, semua device dikunci ke arena) ===== */
+  html { scroll-behavior: smooth; }
+  html.game-screen-locked, body.game-screen-locked { scroll-behavior: auto !important; }
+  #game-canvas { scroll-margin-top: 80px; scroll-margin-bottom: 80px; }
+  body.game-screen-locked { overscroll-behavior: none; -webkit-overflow-scrolling: auto; touch-action: none; }
 </style>
 
 <!-- (tombol chat-toggle lama dihapus; kini pakai #float-chat di stack floating) -->
@@ -259,7 +277,8 @@ window.__ROOM_CONFIG__ = {
     lobbyUrl: "lobby.php",
     diffUrl:  "room_difficulty.php",
     saveUrl:  "game_save.php",
-    seatUrl:  "seats.php"
+    seatUrl:  "seats.php",
+    wasPlaying: <?= $wasPlaying ? 'true' : 'false' ?>
 };
 
 /* ---- Toggle chat drawer (sumber tombol: #float-chat) ----
