@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors */
+  --color-bgpage: #60636C;
+  --color-panel: #9aa0a6;
+  --color-panel2: #b3b8bd;
+  --color-control: #d9dcdf;
+  --color-control-hi: #e6e9ec;
+  --color-ink: #1a1a1a;
+  --color-ink-muted: #4b4f55;
+  --color-accent-red: #d83a3a;
+  --color-accent-green: #2ecc40;
+  --color-accent-yel: #ffd23f;
+
+  /* Shadows */
+  --shadow-panel: 0 2px 0 rgba(0, 0, 0, .25), 0 6px 18px rgba(0, 0, 0, .18);
+  --shadow-btn: 0 2px 0 rgba(0, 0, 0, .35);
+  --shadow-inset1: inset 0 2px 6px rgba(0, 0, 0, .1);
+
+  /* Fonts */
+  --font-pixel: "Press Start 2P", "Courier New", monospace;
+  --font-body: Inter, "Segoe UI", system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply font-body text-ink bg-bgpage min-h-screen flex flex-col items-center px-4 py-8 transition-[padding] duration-300;
+  }
+
+  /* Padding kiri cuma aktif kalau ada element #user-sidebar di dalam body */
+  @media (min-width: 1024px) {
+    body:has(#user-sidebar) { 
+      padding-left: 240px; 
+    }
+  }
+}
+
+@layer components {
+  /* Sidebar Utility */
+  .sidebar-container {
+    @apply fixed top-0 left-0 z-40 h-full w-[220px] bg-panel border-r-2 border-ink shadow-panel p-4 flex-col gap-3 hidden lg:flex;
+  }
+
+  .sidebar-backdrop {
+    @apply fixed inset-0 z-30 hidden bg-ink/45 lg:hidden;
+  }
+
+  /* Flash Message Utility */
+  .flash-msg {
+    @apply w-full max-w-[960px] border border-ink shadow-panel rounded-2xl px-4 py-3 my-3 font-semibold;
+  }
+}
