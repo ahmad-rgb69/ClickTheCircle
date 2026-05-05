@@ -108,9 +108,22 @@ $config = $config ?? require __DIR__ . '/../config.php';
   <?php endif; ?>
 
   <?php
-  $ok  = flash_pop('ok');
-  $err = flash_pop('err');
-  
-  if ($ok)  echo '<div class="flash-msg bg-green-200">' . e($ok) . '</div>';
-  if ($err) echo '<div class="flash-msg bg-red-200">' . e($err) . '</div>';
-  ?>
+$ok  = flash_pop('ok');
+$err = flash_pop('err');
+?>
+
+<?php if ($ok || $err): ?>
+    <div class="flex flex-col items-center w-full px-4 pt-10">
+        <?php if ($ok): ?>
+            <div class="w-full max-w-[550px] border-2 bg-[#D9D9D9] border-black flex justify-center px-2 py-1.5 shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
+                <p class="text-black font-bold text-sm tracking-wide"><?= e($ok) ?></p>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($err): ?>
+            <div class="w-full max-w-[550px] border-2 bg-[#D9D9D9] border-black flex justify-center px-2 py-1.5 shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
+                <p class="text-red-500 font-bold text-sm tracking-wide"><?= e($err) ?></p>
+            </div>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>
