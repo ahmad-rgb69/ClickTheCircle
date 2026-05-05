@@ -2,20 +2,17 @@
 /** @var bool|string $error */
 include __DIR__ . '/header.php';
 ?>
-<!-- Hehe baiki bagian ini biar bagus tampilannya, paling kd mirip lwn di bagian meisi nama lwn pw, di register jua-->
-<?php if (!empty($error)): ?>
-    <div class="z-[100px] fixed border-2 bg-[#D9D9D9] border-black border-b-0 items-center px-2 py-0.5 gap-3>
-        <p class="text-red-500 font-black w-full max-w-[960px]">Name or NPM is not registered.</p>
-    </div>
-    
-<?php endif; ?>
-
-
-
 
 <div class="flex flex-col items-center justify-center min-h-[90vh] w-full px-4">
     
+    <!-- Bagian Notifikasi Error -->
+    <?php if (!empty($error)): ?>
+        <div class="w-full max-w-[550px] border-2 bg-[#D9D9D9] border-black flex justify-center px-2 py-1.5 mb-3 shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
+            <p class="text-black-500 font-bold text-sm tracking-wide">Name or NPM is not registered.</p>
+        </div>
+    <?php endif; ?>
 
+    <!-- Header Logo -->
     <div class="w-full max-w-[550px] bg-[#D9D9D9] border-2 border-black border-b-0 flex items-center px-2 py-0 gap-3">
         <div class="shrink-0 flex items-center justify-center py-1">
             <img src="img/logo.png" alt="Logo" class="h-6 w-auto object-contain [image-rendering:pixelated]">
@@ -23,6 +20,7 @@ include __DIR__ . '/header.php';
         <span class="font-sans text-[11px] text-gray-700 font-semibold italic truncate">ClickTheCircle Beta v1.0.0.</span>
     </div>
 
+    <!-- Main Login Box -->
     <div class="w-full max-w-[550px] bg-[#9D9FA4] border-2 border-black p-5 pt-4 flex flex-col">
         
         <form action="login.php" method="post" class="flex flex-col">
@@ -54,7 +52,7 @@ include __DIR__ . '/header.php';
             
             <div class="flex justify-center">
                 <button type="submit" 
-                        class="w-full max-w-[200px] bg-[#D9D9D9] border-2 border-black py-2 font-bold text-lg text-black hover:shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-white active:translate-y-[2px] active:shadow-none active:translate-y-[1px] transition-all duration-200">
+                        class="w-full max-w-[200px] bg-[#D9D9D9] border-2 border-black py-2 font-bold text-lg text-black hover:shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-white active:translate-y-[2px] active:shadow-none transition-all duration-200">
                     LOG IN
                 </button>
             </div>
@@ -66,4 +64,5 @@ include __DIR__ . '/header.php';
     </div>
 
 </div>
+
 <?php include __DIR__ . '/footer.php'; ?>
