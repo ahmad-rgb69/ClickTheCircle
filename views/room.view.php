@@ -72,7 +72,10 @@ $wasPlaying = room_is_playing((int)$roomId);
             </label>
         </div>
 
-        <div class="flex gap-2 ml-auto">
+        <div class="flex gap-2 ml-auto items-center">
+            <div class="text-xs font-bold mr-2">
+                Time: <span id="game-timer" class="px-2 py-1 bg-control border border-ink rounded-sm">90s</span>
+            </div>
             <button id="game-start" class="btn h-9" <?= $isOwner ? '' : 'disabled' ?>>Start</button>
             <button id="game-reset" class="btn-danger h-9" <?= $isOwner ? '' : 'disabled' ?>>Reset</button>
         </div>
@@ -87,7 +90,7 @@ $wasPlaying = room_is_playing((int)$roomId);
     <div class="mt-3 flex flex-wrap gap-4 items-start">
         <div class="flex-1">
             <p id="game-status" class="text-xs text-ink-muted leading-relaxed">
-                <?= $isOwner ? 'Pick a seat then press Start.' : 'Wait for the owner to press Start. Use WASD + Space to play.' ?>
+                <?= $isOwner ? 'Pick a seat then press Start.' : 'Wait for the owner to press Start.' ?>
             </p>
         </div>
         <div class="flex gap-4">
@@ -101,7 +104,7 @@ $wasPlaying = room_is_playing((int)$roomId);
     </div>
 </div>
 
-<!-- Mobile Controls (Classes managed by app.css) -->
+<!-- Logic Mobile & Modal tetap sama -->
 <div id="mobile-joystick" class="hidden">
     <div id="joy-base"><div id="joy-knob"></div></div>
 </div>
@@ -111,7 +114,6 @@ $wasPlaying = room_is_playing((int)$roomId);
     <button id="float-chat" type="button" class="float-btn">💬</button>
 </div>
 
-<!-- End-Game Modal -->
 <div id="end-modal" class="end-modal hidden" role="dialog" aria-hidden="true">
     <div class="end-modal__backdrop"></div>
     <div class="end-modal__panel">
@@ -125,23 +127,25 @@ $wasPlaying = room_is_playing((int)$roomId);
     </div>
 </div>
 
-<!-- Chat Drawer -->
-<aside id="chat-drawer" class="sidebar-container fixed right-0 left-auto translate-x-full lg:hidden" aria-hidden="true">
-    <div class="flex items-center justify-between p-2 border-b border-ink bg-control rounded-t-xl">
-        <strong class="text-xs">Room Chat</strong>
-        <button type="button" id="chat-close" class="btn-danger px-2 py-0.5 text-[10px]">Close</button>
+<!-- FIX CHAT DRAWER: Gue balikin ke class lama biar JS nemu elemennya -->
+<aside id="chat-drawer" 
+       class="fixed top-0 right-0 z-30 h-full w-full max-w-[420px] bg-panel border-l border-ink shadow-2xl translate-x-full transition-transform duration-300 ease-out flex flex-col" 
+       aria-hidden="true">
+    <div class="flex items-center justify-between px-3 py-2 border-b border-ink bg-control">
+        <strong class="text-sm">Chat — Room <?= e($roomName) ?></strong>
+        <button type="button" id="chat-close" class="btn-danger px-2 py-1 text-xs">Close</button>
     </div>
-    <div id="privat-box" class="chat-box flex-1 m-0 rounded-none border-0 text-xs">
+    <div id="privat-box" class="chat-box flex-1 m-0 rounded-none border-0 overflow-y-auto">
         <?php while ($pr = mysqli_fetch_assoc($messages)): ?>
-            <p>
-                <img src="<?= e(avatar_url($pr['gambar'])) ?>" width="18" height="18" class="rounded-full object-cover">
+            <p class="p-1 text-sm">
+                <img src="<?= e(avatar_url($pr['gambar'])) ?>" width="20" height="20" class="rounded-full object-cover inline align-middle">
                 <strong><?= e($pr['nama']) ?></strong>: <?= e($pr['isi_pesan']) ?>
             </p>
         <?php endwhile; ?>
     </div>
-    <form class="p-2 border-t border-ink flex gap-1" onsubmit="event.preventDefault(); sendRoom();">
-        <input type="text" id="msgRoom" placeholder="Chat..." class="field flex-1 mt-0 text-xs" autocomplete="off">
-        <button type="submit" id="room-chat-send" class="btn text-xs px-3">Send</button>
+    <form class="p-2 pb-3 border-t border-ink flex gap-2" onsubmit="event.preventDefault(); sendRoom();">
+        <input type="text" id="msgRoom" placeholder="Type a message..." class="field flex-1 mt-0" autocomplete="off">
+        <button type="submit" id="room-chat-send" class="btn shrink-0">Send</button>
     </form>
 </aside>
 
@@ -149,7 +153,7 @@ $wasPlaying = room_is_playing((int)$roomId);
     <button id="room-leave-btn" onclick="keluarSesuaiProsedur()" class="btn-danger">Leave to Lobby</button>
 </div>
 
-<!-- PHP Script & Config -->
+<!-- Logic Scripts -->
 <script>
 window.__ROOM_CONFIG__ = {
     wsUrl: window.__WS_URL__,
@@ -173,16 +177,20 @@ window.__ROOM_CONFIG__ = {
     const btn = document.getElementById('float-chat');
     const close = document.getElementById('chat-close');
     if (!drawer || !btn) return;
+    let open = false;
     function setOpen(v) {
+        open = v;
         drawer.classList.toggle('translate-x-full', !v);
         document.body.classList.toggle('chat-open', v);
     }
-    btn.addEventListener('click', () => setOpen(true));
+    btn.addEventListener('click', () => setOpen(!open));
     if (close) close.addEventListener('click', () => setOpen(false));
 
     if (window.__ROOM_CONFIG__.isOwner) document.body.classList.add('is-owner');
     if (('ontouchstart' in window) || navigator.maxTouchPoints > 0) {
         document.body.classList.add('is-touch');
+    } else {
+        document.getElementById('floating-controls')?.classList.remove('hidden');
     }
 })();
 </script>
@@ -191,9 +199,9 @@ window.__ROOM_CONFIG__ = {
 <script src="js/seats.js"></script>
 <script src="js/game.js"></script>
 
-<!-- Asset Loaders (Arena & Boxskin) -->
+<!-- Asset Loader Logic (Arena & Boxskin) -->
 <script>
-/* ... (Tetap biarkan logic fetch manifest di sini Dy, karena ini logic bukan style) ... */
+/* Paste kembali logic script Arena & Boxskin lu di sini */
 </script>
 
 <?php include __DIR__ . '/footer.php'; ?>
