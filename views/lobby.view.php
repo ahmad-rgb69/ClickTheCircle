@@ -181,10 +181,14 @@ $presetItems   = avatar_presets_list();
                                 </span>
                             </label>
 
-                            <label class="font-semibold flex flex-col gap-1 border-t pt-2 border-gray-300">
-                                <span class="mb-1 text-gray-700">Upload your own photo (max 2MB)</span>
-                                <input type="file" name="new_gambar" accept="image/*" class="text-xs file:mr-4 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-gray-400 file:text-gray-900 hover:file:bg-gray-500 cursor-pointer">
-                            </label>
+                         <label class="font-bold inline-flex flex-wrap items-center gap-3 p-3 border-t-2 border-ink bg-white/10 w-full cursor-pointer hover:bg-white/20 transition-colors">
+                            <input type="radio" name="avatar_mode" value="upload" class="w-5 h-5 cursor-pointer accent-ink">
+                            
+                            <span class="text-sm uppercase tracking-tighter">Upload your own photo (max 2MB)</span>
+                            
+                            <input type="file" name="new_gambar" accept="image/*" 
+                                class="field flex-1 min-w-[200px] text-xs cursor-pointer file:mr-4 file:py-1 file:px-3 file:border-2 file:border-ink  file:font-black file:uppercase file:text-[10px] hover:file:bg-accent-yel/80">
+                        </label>
                         </div>
                     </fieldset>
 
