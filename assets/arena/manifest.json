@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "file": "cyberpunk.jpg",
+      "name": "Cyberpunk Neon"
+    },
+    {
+      "file": "forest.jpg",
+      "name": "Forest Glow"
+    },
+    {
+      "file": "ice.jpg",
+      "name": "Ice Cavern"
+    }
+  ]
+}
