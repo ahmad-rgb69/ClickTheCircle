@@ -47,6 +47,10 @@ $config = $config ?? require __DIR__ . '/../config.php';
           style="text-shadow: 1px 1px 0 #000;">
           PLAYER INFO
       </div>
+    <div class="font-pixel text-xs text-white text-center bg-ink/80 border border-ink rounded-xl py-2"
+          style="text-shadow: 1px 1px 0 #000;">
+          <a href="statistik.php">Player Statistik 📈</a>
+      </div>
 
       <!-- Logged In Box -->
       <div class="flex flex-col items-center gap-2 bg-control border border-ink rounded-xl p-3 shadow-inset1">
