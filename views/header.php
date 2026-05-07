@@ -15,6 +15,7 @@ $config = $config ?? require __DIR__ . '/../config.php';
     <!-- Vite Assets: Langsung panggil app.css lo -->
     <script type="module" src="http://localhost:5173/@vite/client"></script>
     <script type="module" src="http://localhost:5173/resources/css/app.css"></script>
+    <link rel="stylesheet" href="dist/assets/main-Oje7ueWM.css">
     
     <link rel="icon" type="image/png" href="img/logo.png">
 
