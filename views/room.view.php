@@ -196,6 +196,24 @@ $wasPlaying = room_is_playing((int)$roomId);
     transition: transform 0.1s ease, box-shadow 0.1s ease !important;
   }
 
+/* Warna untuk isi bar turbo (bg-accentGreen) */
+.bg-accentGreen {
+    background-color: #7ad97a !important; /* Hijau cerah */
+}
+
+/* Pastikan container bar turbo terlihat jelas */
+.bg-ink\/20 {
+    background-color: rgba(0, 0, 0, 0.1) !important; /* Warna abu-abu dasar bar */
+}
+
+/* Tambahan: Jika ingin bar turbo terlihat lebih 'tebal' ala Brutalism */
+#game-scores span.inline-block.w-20.h-2 {
+    height: 12px !important; /* Sedikit lebih tinggi agar jelas */
+    border: 1.5px solid #000 !important;
+    box-shadow: none !important; /* Jangan pakai shadow di dalam bar agar rapi */
+}
+
+  
   /* Efek ditekan untuk tombol agar lebih hidup (shadow hilang, elemen turun) */
   .btn:active, 
   .btn-danger:active, 
