@@ -15,6 +15,7 @@ $config = $config ?? require __DIR__ . '/../config.php';
     <!-- Vite Assets: Langsung panggil app.css lo -->
     <script type="module" src="http://localhost:5173/@vite/client"></script>
     <script type="module" src="http://localhost:5173/resources/css/app.css"></script>
+    <link rel="stylesheet" href="dist/assets/main-Oje7ueWM.css">
     
     <link rel="icon" type="image/png" href="img/logo.png">
 
@@ -46,6 +47,10 @@ $config = $config ?? require __DIR__ . '/../config.php';
       <div class="font-pixel text-xs text-white text-center bg-ink/80 border border-ink rounded-xl py-2"
           style="text-shadow: 1px 1px 0 #000;">
           PLAYER INFO
+      </div>
+    <div class="font-pixel text-xs text-white text-center bg-ink/80 border border-ink rounded-xl py-2"
+          style="text-shadow: 1px 1px 0 #000;">
+          <a href="statistik.php">Player Statistik 📈</a>
       </div>
 
       <!-- Logged In Box -->

@@ -185,10 +185,14 @@ $presetItems   = avatar_presets_list();
                                 </span>
                             </label>
 
-                            <label class="font-semibold flex flex-col gap-1 border-t pt-2 border-gray-300">
-                                <span class="mb-1 text-gray-700">Upload your own photo (max 2MB)</span>
-                                <input type="file" name="new_gambar" accept="image/*" class="text-xs file:mr-4 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-gray-400 file:text-gray-900 hover:file:bg-gray-500 cursor-pointer">
-                            </label>
+                         <label class="font-bold inline-flex flex-wrap items-center gap-3 p-3 border-t-2 border-ink bg-white/10 w-full cursor-pointer hover:bg-white/20 transition-colors">
+                            <input type="radio" name="avatar_mode" value="upload" class="w-5 h-5 cursor-pointer accent-ink">
+                            
+                            <span class="text-sm uppercase tracking-tighter">Upload your own photo (max 2MB)</span>
+                            
+                            <input type="file" name="new_gambar" accept="image/*" 
+                                class="field flex-1 min-w-[200px] text-xs cursor-pointer file:mr-4 file:py-1 file:px-3 file:border-2 file:border-ink  file:font-black file:uppercase file:text-[10px] hover:file:bg-accent-yel/80">
+                        </label>
                         </div>
                     </fieldset>
 
@@ -216,10 +220,10 @@ $presetItems   = avatar_presets_list();
         <div id="about-section" class="w-full max-w-4xl mt-2 hidden transition-all duration-300 ease-in-out transform scale-95 opacity-0 bg-gray-300 border-2 border-gray-600 rounded-md shadow-xl p-6 text-gray-800">
             <h3 class="text-2xl font-bold border-b pb-2 mb-4 border-gray-500 text-gray-700">About</h3>
             <p class="text-xs text-gray-600 leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                ClickTheCircle adalah game adu ketangkasan berbasis web yang dirancang untuk menguji kecepatan reaksi dan akurasi.
+                Di game ini, pemain bisa duel secara real-time bareng pemain lain dalam satu ruangan (private room). Intinya simpel: Siapa yang paling cepat dapat target dan poin paling tinggi, dia yang menang.
+                Dikembangkan dengan gaya visual Neubrutalism, game ini fokus pada gameplay yang kompetitif, kustomisasi penuh, dan performa yang responsif.
+
             </p>
         </div>
         
