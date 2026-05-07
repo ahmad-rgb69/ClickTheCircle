@@ -36,14 +36,14 @@ $presetItems   = avatar_presets_list();
                 class="flex justify-between items-center bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2 border-gray-600 shadow-md hover:bg-gray-200 transition-colors cursor-pointer rounded"
                 aria-controls="user-sidebar" aria-expanded="false">
             <span class="flex-1 text-left">Hi, <strong><?= e($_SESSION['nama']) ?></strong>!</span>
-            <span class="font-bold underline underline-offset-4 text-sm text-gray-600">Profile</span>
+       
         </button>
 
         <button id="host-btn" class="w-full bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2 border-gray-600 shadow-md hover:bg-gray-200 transition-colors text-center cursor-pointer rounded">
-            Host
+            Host & Join Room
         </button>
 
-        <button id="join-btn" class="w-full bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2 border-gray-600 shadow-md hover:bg-gray-200 transition-colors text-center cursor-pointer rounded">
+        <button id="join-btn" class="w-full hidden bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2 border-gray-600 shadow-md hover:bg-gray-200 transition-colors text-center cursor-pointer rounded">
             Join Room
         </button>
 

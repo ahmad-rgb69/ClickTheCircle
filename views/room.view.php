@@ -27,7 +27,7 @@ $wasPlaying = room_is_playing((int)$roomId);
             <?php if ($isOwner): ?>
                 <span class="px-2 py-0.5 bg-[#00FF00] text-ink rounded-none text-xs font-bold border-2 border-green">OWNER</span>
             <?php endif; ?>
-            <span class="font-bold underline underline-offset-4">👤 Profile</span>
+            
         </button>
 
         <div class="panel-box rounded-none mt-4 p-4">
@@ -61,9 +61,9 @@ $wasPlaying = room_is_playing((int)$roomId);
 
                 <label class="text-sm font-bold">Duration :
                     <select id="game-duration" class="field mt-0 inline-block w-auto ml-1" <?= $isOwner ? '' : 'disabled' ?>>
-                        <option value="30">30 seconds</option>
+                        <!-- option value="30">30 seconds</option> -->
                         <option value="60">60 seconds</option>
-                        <option value="90" selected>90 seconds</option>
+                        <!-- <option value="90" selected>90 seconds</option> -->
                     </select>
                 </label>
 
