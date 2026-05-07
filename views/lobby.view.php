@@ -28,6 +28,10 @@ $presetItems   = avatar_presets_list();
     }
 </style>
 
+<audio id="lobby-bgm" loop>
+    <source src="img/softandwet.mp3" type="audio/mpeg">
+</audio>
+
 <main class="flex flex-col lg:flex-row items-stretch justify-between max-w-7xl mx-auto w-full gap-8 px-4 py-8 mb-10 relative">
 
     <div class="w-full lg:w-4/12 flex flex-col gap-6 z-10">
@@ -242,6 +246,18 @@ window.__LOBBY_CONFIG__ = {
 };
 
 document.addEventListener("DOMContentLoaded", function() {
+    // === LOGIKA BGM ===
+    const bgm = document.getElementById("lobby-bgm");
+    bgm.volume = 0.3; // Atur volume (0.0 ke 1.0)
+
+    const startAudio = () => {
+        bgm.play().catch(err => console.log("Autoplay dicegah browser"));
+        document.removeEventListener("click", startAudio);
+    };
+    // Menunggu klik pertama user untuk memulai audio
+    document.addEventListener("click", startAudio);
+
+    // === LOGIKA POP-UP MENU ===
     const hostBtn = document.getElementById("host-btn");
     const roomsSection = document.getElementById("private-rooms-section");
 
@@ -289,24 +305,13 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    if (hostBtn) {
-        hostBtn.addEventListener("click", () => toggleSection(roomsSection));
-    }
-    
-    if (joinBtn) {
-        joinBtn.addEventListener("click", () => toggleSection(joinSection));
-    }
-
-    if (settingBtn) {
-        settingBtn.addEventListener("click", () => toggleSection(settingSection));
-    }
-
-    if (aboutBtn) {
-        aboutBtn.addEventListener("click", () => toggleSection(aboutSection));
-    }
+    if (hostBtn) hostBtn.addEventListener("click", () => toggleSection(roomsSection));
+    if (joinBtn) joinBtn.addEventListener("click", () => toggleSection(joinSection));
+    if (settingBtn) settingBtn.addEventListener("click", () => toggleSection(settingSection));
+    if (aboutBtn) aboutBtn.addEventListener("click", () => toggleSection(aboutSection));
 });
 
-// UX: ketika user klik radio preset/upload, otomatis pilih mode-nya.
+// UX Avatar radio handling
 (function(){
   document.querySelectorAll('#profile-form input[name="preset_avatar"]').forEach(r => {
     r.addEventListener('change', () => {
