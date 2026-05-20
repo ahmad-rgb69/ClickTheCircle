@@ -1,0 +1,12 @@
+{
+  "items": [
+    { "file": "avatar-1.png", "name": "Merah" },
+    { "file": "avatar-2.png", "name": "Biru" },
+    { "file": "avatar-3.png", "name": "Hijau" },
+    { "file": "avatar-4.png", "name": "Kuning" },
+    { "file": "avatar-5.png", "name": "Ungu" },
+    { "file": "avatar-6.png", "name": "Pink" },
+    { "file": "avatar-7.png", "name": "Tosca" },
+    { "file": "avatar-8.png", "name": "Oranye" }
+  ]
+}

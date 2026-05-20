@@ -1,0 +1,144 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors */
+  --color-bgpage: #60636C;
+  --color-panel: #9aa0a6;
+  --color-panel2: #b3b8bd;
+  --color-control: #d9dcdf;
+  --color-control-hi: #e6e9ec;
+  --color-ink: #1a1a1a;
+  --color-ink-muted: #4b4f55;
+  --color-accent-red: #d83a3a;
+  --color-accent-green: #2ecc40;
+  --color-accent-yel: #ffd23f;
+
+  /* Shadows */
+  --shadow-panel: 0 2px 0 rgba(0, 0, 0, .25), 0 6px 18px rgba(0, 0, 0, .18);
+  --shadow-btn: 0 2px 0 rgba(0, 0, 0, .35);
+  --shadow-inset1: inset 0 2px 6px rgba(0, 0, 0, .1);
+
+  /* Fonts */
+  --font-pixel: "Press Start 2P", "Courier New", monospace;
+  --font-body: Inter, "Segoe UI", system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply font-body text-ink bg-bgpage min-h-screen flex flex-col items-center px-4 py-8 transition-[padding] duration-300;
+  }
+  @media (min-width: 1024px) {
+    body:has(#user-sidebar) { padding-left: 240px; }
+  }
+}
+
+@layer components {
+  /* --- Buttons --- */
+  .btn { 
+    @apply inline-flex items-center justify-center font-bold uppercase tracking-wide bg-control hover:bg-control-hi border border-ink rounded-xl px-5 py-2 shadow-btn active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed min-h-[40px]; 
+  }
+
+  .btn-danger { 
+    @apply inline-flex items-center justify-center font-bold uppercase tracking-wide bg-accent-red text-white hover:brightness-110 border border-ink rounded-xl px-5 py-2 shadow-btn active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed min-h-[40px]; 
+  }
+
+  /* --- Containers --- */
+  .panel-box { 
+    @apply w-full max-w-[960px] bg-panel border border-ink shadow-panel rounded-2xl; 
+  }
+
+  .panel2-box { 
+    @apply w-full max-w-[960px] bg-panel2 border border-ink shadow-panel rounded-2xl; 
+  }
+
+  .h-title { 
+    @apply w-full max-w-[960px] bg-panel2 border border-ink shadow-panel  text-center text-2xl md:text-3xl font-extrabold tracking-wide px-5 py-3 mb-3; 
+  }
+
+  .h-section { 
+    @apply w-full max-w-[960px] bg-panel2 border border-ink shadow-panel rounded-2xl text-xl md:text-2xl font-extrabold tracking-wide px-4 py-2 mb-3; 
+  }
+
+  /* --- Sidebar & Drawer --- */
+  .sidebar-container {
+    @apply fixed top-0 left-0 z-40 h-full w-[220px] bg-panel border-r-2 border-ink shadow-panel p-4 flex-col gap-3 hidden lg:flex;
+  }
+
+  .sidebar-backdrop {
+    @apply fixed inset-0 z-30 hidden bg-ink/45 lg:hidden;
+  }
+
+  /* --- Room: Mobile Controls --- */
+  #mobile-joystick { 
+    @apply fixed left-6 bottom-6 z-45 w-[140px] h-[140px] touch-none select-none; 
+  }
+
+  #joy-base { 
+    @apply absolute inset-0 rounded-full bg-ink/45 border-2 border-white/25 backdrop-blur-sm; 
+  }
+
+  #joy-knob { 
+    @apply absolute left-1/2 top-1/2 w-[60px] h-[60px] -ml-[30px] -mt-[30px] rounded-full bg-accent-yel border-2 border-ink shadow-[2px_2px_0_#1a1a1a]; 
+  }
+
+  #floating-controls { 
+    @apply fixed right-4 bottom-4 z-46 flex flex-col-reverse gap-3; 
+  }
+
+  .float-btn { 
+    @apply w-[60px] h-[60px] rounded-full bg-accent-yel border-2 border-ink shadow-[2px_2px_0_#1a1a1a] flex items-center justify-center text-2xl font-extrabold active:translate-x-[2px] active:translate-y-[2px] active:shadow-none; 
+  }
+
+  .float-btn--turbo { 
+    @apply bg-accent-green; 
+  }
+
+  /* --- Room: End-Game Modal --- */
+  .end-modal { 
+    @apply fixed inset-0 z-[9999] flex items-center justify-center; 
+  }
+
+  .end-modal__backdrop { 
+    @apply absolute inset-0 border border-blue-300 bg-black/60 backdrop-blur-sm; 
+  }
+
+  .end-modal__panel { 
+    @apply relative bg-ink text-white border-2 border-blue-300 rounded-xl p-5 min-w-[300px] shadow-[6px_6px_0_#000]; 
+  }
+
+  .end-modal__headline { 
+    @apply text-center text-blue-300 font-bold mb-3; 
+  }
+
+  .end-modal__scores li { 
+    @apply flex justify-between p-2 bg-white/10 rounded mb-1; 
+  }
+
+  /* --- Form & Chat --- */
+  .field { 
+    @apply block w-full mt-1 px-3 py-2 bg-control border border-ink rounded-xl outline-none focus:bg-white focus:ring-2 focus:ring-black/30; 
+  }
+
+  .chip { 
+    @apply w-full max-w-[960px] bg-panel border border-ink shadow-panel rounded-2xl flex items-center gap-3 px-4 py-2; 
+  }
+
+  .chat-box { 
+    @apply w-full max-w-[960px] bg-control border border-ink rounded-xl p-4 overflow-y-auto shadow-inset1; 
+  }
+
+  .chat-box p { @apply m-1 flex items-center gap-2; }
+
+  .chat-box img { @apply border border-ink bg-white; }
+
+  /* --- Others --- */
+  .room-card { 
+    @apply w-full max-w-[960px] bg-panel2 border border-ink shadow-panel rounded-xl p-4 flex flex-col gap-2 max-w-none; 
+  }
+
+  .flash-msg {
+    @apply w-full max-w-[960px] border border-ink shadow-panel rounded-2xl px-4 py-3 my-3 font-semibold; 
+  }
+
+  
+}
