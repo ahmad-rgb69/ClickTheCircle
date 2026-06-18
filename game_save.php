@@ -38,7 +38,11 @@ if (!in_array($roomId, Room::VALID_IDS, true) || !in_array($diff, ['easy', 'norm
 
 $myId = (int) $_SESSION['id'];
 $room = Room::find($db, $roomId);
-if (!$room || (int) ($room['owner_id'] ?? 0) !== $myId) {
+// FIX: izinkan simpan kalau (a) user adalah owner room, ATAU
+// (b) room belum punya owner (NULL) — sesi hot-seat tetap bisa disimpan
+//     dengan owner_id = user yang sedang login.
+$roomOwner = $room ? (int) ($room['owner_id'] ?? 0) : -1;
+if (!$room || ($roomOwner !== 0 && $roomOwner !== $myId)) {
     http_response_code(403);
     echo json_encode(['ok' => false, 'err' => 'only owner can save']);
     exit;
@@ -94,10 +98,22 @@ try {
     $sessionId = mysqli_insert_id($db);
 
     // tentukan winner
+    // FIX: kalau ada tie (skor max sama), hanya pemain dengan slot terkecil
+    // yang ditandai winner — supaya tidak ada "juara dobel" di UI.
     $maxScore = 0;
     foreach ($scores as $s) {
         if ((int) ($s['score'] ?? 0) > $maxScore)
             $maxScore = (int) $s['score'];
+    }
+    $winnerSlot = -1;
+    if ($maxScore > 0) {
+        foreach ($scores as $s) {
+            if ((int) ($s['score'] ?? 0) === $maxScore) {
+                $sl = (int) ($s['slot'] ?? 0);
+                if ($winnerSlot < 0 || $sl < $winnerSlot)
+                    $winnerSlot = $sl;
+            }
+        }
     }
 
     $ins = mysqli_prepare($db, "INSERT INTO game_scores (session_id, slot, player_label, score, is_winner, avg_reaction_ms, consistency_ms, change_after5_ms, hits_count) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -107,7 +123,7 @@ try {
         $slot = (int) ($s['slot'] ?? 0);
         $label = substr((string) ($s['label'] ?? ''), 0, 32);
         $sc = (int) ($s['score'] ?? 0);
-        $win = ($maxScore > 0 && $sc === $maxScore) ? 1 : 0;
+        $win = ($winnerSlot > 0 && $slot === $winnerSlot) ? 1 : 0;
         $st = $stats[$slot] ?? ['avg' => 0, 'cons' => 0, 'change' => 0, 'count' => 0];
         mysqli_stmt_bind_param(
             $ins,

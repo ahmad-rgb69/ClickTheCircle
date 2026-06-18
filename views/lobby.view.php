@@ -7,142 +7,289 @@
 require_once __DIR__ . '/../helpers/avatar.php';
 include __DIR__ . '/header.php';
 
-$myGambar      = (string)$_SESSION['gambar'];
+$myGambar       = (string)$_SESSION['gambar'];
 $myAvatarUrl   = avatar_url($myGambar);
 $myPresetFile  = avatar_preset_file($myGambar);
 $presetItems   = avatar_presets_list();
 ?>
-<button type="button" id="lobby-profile-open"
-        class="chip text-left cursor-pointer hover:bg-panel2 transition-colors"
-        aria-controls="user-sidebar" aria-expanded="false">
-    <span class="flex-1">Hi, <strong><?= e($_SESSION['nama']) ?></strong>!</span>
-    <span class="font-bold underline underline-offset-4">Profile</span>
-</button>
 
-<details class="panel-box mt-1 mb-1 rounded">
-    <summary class="cursor-pointer select-none px-4 py-2 font-bold bg-panel2 border border-ink rounded">
-        Manage My Account
-    </summary>
-    <div class="p-4">
-        <h4 class="font-extrabold mb-2">Edit Profile</h4>
-        <form method="post" action="profile_update.php" enctype="multipart/form-data" class="flex flex-col gap-3" id="profile-form">
-            <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
+<style>
+    @keyframes peep {
+        0%, 100% {
+            transform: translateY(100%); /* Tersembunyi di bawah */
+        }
+        10%, 90% {
+            transform: translateY(30%);    /* Muncul penuh */
+        }
+    }
 
-            <label class="font-semibold">New name:
-                <input type="text" name="new_nama" value="<?= e($_SESSION['nama']) ?>" required class="field">
-            </label>
-            <label class="font-semibold">New NPM:
-                <input type="password" name="new_npm" value="<?= e($_SESSION['npm'] ?? '') ?>" required class="field">
-            </label>
+    .animate-peep {
+        animation: peep 5s ease-in-out infinite;
+    }
+</style>
 
-            <fieldset class="border border-ink/40 rounded-sm p-3">
-                <legend class="font-extrabold px-1">Profile Avatar</legend>
+<main class="flex flex-col lg:flex-row items-stretch justify-between max-w-7xl mx-auto w-full gap-8 px-4 py-8 mb-10 relative">
 
-                <div class="flex flex-col gap-3">
-                    <label class="font-semibold inline-flex items-center gap-2">
-                        <input type="radio" name="avatar_mode" value="keep" checked>
-                        <span>Use current avatar</span>
-                        <img src="<?= e($myAvatarUrl) ?>" width="32" height="32" class="rounded-full border border-ink object-cover">
-                    </label>
+    <div class="w-full lg:w-4/12 flex flex-col gap-6 z-10">
+        
+        <button type="button" id="lobby-profile-open"
+                class="flex justify-between items-center bg-gray-300 text-gray-800 py-4 px-6 text-xl font-semi border-2 border-gray-600 shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-gray-200 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 cursor-pointer rounded"
+                aria-controls="user-sidebar" aria-expanded="false">
+            <span class="flex-1 text-left">Hi, <strong><?= e($_SESSION['nama']) ?></strong>!</span>
+       
+        </button>
 
-                    <label class="font-semibold inline-flex items-start gap-2">
-                        <input type="radio" name="avatar_mode" value="preset" class="mt-1">
-                        <span class="flex-1">
-                            <div class="mb-1">Choose from presets</div>
-                            <div class="grid grid-cols-4 sm:grid-cols-8 gap-2">
-                                <?php foreach ($presetItems as $p): ?>
-                                    <label class="cursor-pointer relative">
-                                        <input type="radio" name="preset_avatar" value="<?= e($p['file']) ?>"
-                                               <?= ($p['file'] === $myPresetFile) ? 'checked' : '' ?>
-                                               class="peer sr-only">
-                                        <img src="assets/avatars/<?= e($p['file']) ?>"
-                                             alt="<?= e($p['name']) ?>"
-                                             title="<?= e($p['name']) ?>"
-                                             class="w-12 h-12 rounded-full border-2 border-ink/30 object-cover peer-checked:border-accentRed peer-checked:ring-2 peer-checked:ring-accentRed">
-                                    </label>
-                                <?php endforeach; ?>
-                            </div>
+        <button id="host-btn" class="w-full bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2  border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-gray-200 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 cursor-pointer rounded">
+            Host & Join Room
+        </button>
+
+        <button id="join-btn" class="w-full hidden bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-gray-200 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 text-center cursor-pointer rounded">
+            Join Room
+        </button>
+
+        <a href="leaderboard.php" class="block w-full bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:shadow-none active:translate-x-1 active:translate-y-1 transition-all text-center cursor-pointer rounded">
+            Leaderboard
+        </a>
+
+        <button id="setting-btn" class="w-full bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-gray-200 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 text-center cursor-pointer rounded">
+            Settings
+        </button>
+
+        <button id="about-btn" class="w-full bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-gray-200 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 text-center cursor-pointer rounded">
+            About
+        </button>
+
+        <div class="w-full bg-gray-400 border-2 border-gray-600 p-2 flex flex-col h-[280px] border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-gray-800 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 text-center cursor-pointer rounded">
+            <div class="bg-gray-300 text-gray-700 text-xs px-2 py-1 font-semibold border-b border-gray-500">
+                Chat box
+            </div>
+            <div id="chat-box" class="flex-1 bg-gray-300 p-2 text-gray-500 text-xs overflow-y-auto">
+                <?php while ($p = mysqli_fetch_assoc($messages)): ?>
+                    <p class="mb-1 flex items-center gap-2">
+                        <img src="<?= e(avatar_url($p['gambar'])) ?>" width="20" height="20" class="rounded-full object-cover">
+                        <strong><?= e($p['nama']) ?></strong>: <?= e($p['isi_pesan']) ?>
+                    </p>
+                <?php endwhile; ?>
+            </div>
+            <div class="mt-2 bg-gray-300 p-1 border-t border-gray-400 flex items-center gap-2 rounded-b">
+                <input type="text" id="message" placeholder="Write a lobby message..." class="field flex-1 text-xs py-1 border border-gray-400 bg-gray-50 text-gray-700 outline-none px-2 rounded">
+                <button onclick="sendLobby()" class="bg-gray-600 hover:bg-gray-700 text-white text-xs font-semibold px-3 py-1 rounded border border-gray-800 transition-colors">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-full lg:w-8/12 flex flex-col gap-6 items-center justify-start relative z-10">
+        
+        <div class="w-full max-w-4xl flex justify-center">
+            <img src="img/logo.png" alt="Click The Circle Logo" class="w-full h-auto border-4 border-gray-600 rounded-md shadow-xl object-cover">
+        </div>
+
+        <div id="pilih-menu-placeholder" class="w-full text-center py-20 bg-gray-300 border-2 border-dashed border-gray-500 rounded-md shadow-md text-gray-500 max-w-4xl">
+            Pilih menu di sebelah kiri untuk melihat detail.
+        </div>
+
+        <div id="private-rooms-section" class="w-full max-w-4xl mt-2 hidden transition-all duration-300 ease-in-out transform scale-95 opacity-0 bg-gray-100 border-2 border-gray-600 rounded-md shadow-xl p-6 text-gray-800">
+            <h3 class="text-2xl font-bold text-gray-700 border-b border-gray-400 pb-2 mb-6">Private Rooms</h3>
+            
+            <div id="rooms-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"
+                 style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+            <?php foreach ($rooms as $room): ?>
+                <?php $roomName = $room['name'] ?? ('Room #' . $room['id']); ?>
+                <div id="room-card-<?= $room['id'] ?>" class="bg-gray-300 border border-gray-500 p-5 rounded-md shadow-md text-gray-800 flex flex-col justify-between h-40">
+                    <div>
+                        <h4 class="font-bold text-lg mb-1">😴 <?= e($roomName) ?></h4>
+                        <p id="owner-info-<?= $room['id'] ?>" class="text-xs text-gray-600 m-0 mb-3">
+                            <?php if ($room['is_occupied'] === 1 && $room['owner_name'] !== ''): ?>
+                                Current owner: <?= e($room['owner_name']) ?>
+                            <?php else: ?>
+                                No owner yet.
+                            <?php endif; ?>
+                        </p>
+                    </div>
+                    
+                    <form method="post" action="room_enter.php" id="form-room-<?= $room['id'] ?>" class="flex flex-col gap-2 m-0 mt-auto">
+                        <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
+                        <input type="hidden" name="room_id" value="<?= $room['id'] ?>">
+                        <input type="password" name="room_pass" placeholder="Password for Room <?= e($roomName) ?>" required class="w-full px-3 py-1.5 bg-gray-50 border border-gray-400 rounded text-xs focus:outline-none">
+                        <span id="room-actions-<?= $room['id'] ?>" class="w-full mt-1">
+                            <?php if ($room['is_occupied'] === 0): ?>
+                                <button type="submit" class="w-full bg-gray-700 text-white font-semibold py-1.5 rounded text-xs hover:bg-gray-800 transition-colors">Enter &amp; Become Owner</button>
+                            <?php else: ?>
+                                <button type="button" onclick="ketukPintu(<?= $room['id'] ?>)" class="w-full bg-orange-500 text-white font-semibold py-1.5 rounded text-xs hover:bg-orange-600 transition-colors">Request to Join</button>
+                            <?php endif; ?>
                         </span>
-                    </label>
-
-                    <label class="font-semibold inline-flex items-center gap-2">
-                        <input type="radio" name="avatar_mode" value="upload">
-                        <span>Upload your own photo (max 2MB)</span>
-                        <input type="file" name="new_gambar" accept="image/*" class="field cursor-pointer">
-                    </label>
+                    </form>
                 </div>
-            </fieldset>
+            <?php endforeach; ?>
+            </div>
+        </div>
 
-            <button type="submit" class="btn self-start">Save Changes</button>
-        </form>
+        <div id="join-room-section" class="w-full max-w-4xl mt-2 hidden transition-all duration-300 ease-in-out transform scale-95 opacity-0 bg-gray-100 border-2 border-gray-600 rounded-md shadow-xl p-6 text-gray-800">
+            <h3 class="text-2xl font-bold border-b pb-2 mb-6 border-gray-400 text-gray-700">Join Room Selection</h3>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <?php for ($i = 1; $i <= 5; $i++): ?>
+                    <div class="border-2 border-gray-400 p-4 rounded bg-gray-200 flex flex-col justify-between h-28 shadow-sm">
+                        <div>
+                            <p class="font-bold text-gray-800 text-sm">Room Selection <?= $i ?></p>
+                            <span class="text-xs text-gray-500">Kapasitas: 0/4</span>
+                        </div>
+                        <button class="w-full bg-gray-700 hover:bg-gray-800 text-white font-semibold py-1 mt-3 rounded text-xs transition-colors">Join Room <?= $i ?></button>
+                    </div>
+                <?php endfor; ?>
+            </div>
+        </div>
 
-        <hr class="my-4 border-t border-ink/30">
-        <h4 class="font-extrabold mb-2">Delete Account</h4>
-        <form method="post" action="profile_delete.php"
-              onsubmit="return confirm('Delete your account? This action cannot be undone.');"
-              class="flex flex-col gap-2">
-            <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
-            <label class="font-semibold">Type DELETE to confirm: <input type="text" name="delete_confirm" required class="field"></label>
-            <button type="submit" class="btn-danger self-start">Delete My Account</button>
-        </form>
+        <div id="setting-section" class="w-full max-w-4xl mt-2 hidden transition-all duration-300 ease-in-out transform scale-95 opacity-0 bg-gray-100 border-2 border-gray-600 rounded-md shadow-xl p-6 text-gray-800">
+            <h3 class="text-2xl font-bold border-b pb-2 mb-4 border-gray-400 text-gray-700">Settings</h3>
+            
+            <div class="flex flex-col gap-4">
+                <h4 class="font-extrabold text-sm border-b pb-1 border-gray-400 text-gray-700">Edit Profile</h4>
+                <form method="post" action="profile_update.php" enctype="multipart/form-data" class="flex flex-col gap-3" id="profile-form">
+                    <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
 
-        <hr class="my-4 border-t border-ink/30">
-        <h4 class="font-extrabold mb-2">Logout</h4>
-        <a href="logout.php" class="btn-danger self-start inline-block">↪ Logout</a>
+                    <label class="font-semibold text-sm flex flex-col gap-1">New name:
+                        <input type="text" name="new_nama" value="<?= e($_SESSION['nama']) ?>" required class="w-full px-3 py-2 bg-gray-100 border border-gray-500 rounded text-sm focus:outline-none">
+                    </label>
+                    <label class="font-semibold text-sm flex flex-col gap-1">New NPM:
+                        <input type="password" name="new_npm" value="<?= e($_SESSION['npm'] ?? '') ?>" required class="w-full px-3 py-2 bg-gray-100 border border-gray-500 rounded text-sm focus:outline-none">
+                    </label>
+
+                    <fieldset class="border-2 border-gray-400 rounded p-3 bg-gray-200">
+                        <legend class="font-extrabold px-1 text-xs">Profile Avatar</legend>
+
+                        <div class="flex flex-col gap-3 text-xs mt-2">
+                            <label class="font-semibold flex items-center gap-2 cursor-pointer bg-gray-100 p-2 rounded">
+                                <input type="radio" name="avatar_mode" value="keep" checked>
+                                <span>Use current avatar</span>
+                                <img src="<?= e($myAvatarUrl) ?>" width="32" height="32" class="rounded-full border border-gray-500 object-cover ml-auto">
+                            </label>
+
+                            <label class="font-semibold flex items-start gap-2 cursor-pointer border-t pt-2 border-gray-300">
+                                <input type="radio" name="avatar_mode" value="preset" class="mt-1">
+                                <span class="flex-1">
+                                    <div class="mb-1 font-bold text-gray-700">Choose from presets</div>
+                                    <div class="grid grid-cols-4 gap-2">
+                                        <?php foreach ($presetItems as $p): ?>
+                                            <label class="cursor-pointer relative flex justify-center">
+                                                <input type="radio" name="preset_avatar" value="<?= e($p['file']) ?>"
+                                                       <?= ($p['file'] === $myPresetFile) ? 'checked' : '' ?>
+                                                       class="peer sr-only">
+                                                <img src="assets/avatars/<?= e($p['file']) ?>"
+                                                     alt="<?= e($p['name']) ?>"
+                                                     title="<?= e($p['name']) ?>"
+                                                     class="w-10 h-10 rounded-full border-2 border-gray-400 object-cover peer-checked:border-red-400 peer-checked:ring-2 peer-checked:ring-red-400 transition-all">
+                                            </label>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </span>
+                            </label>
+
+                         <label class="font-bold inline-flex flex-wrap items-center gap-3 p-3 border-t-2 border-ink bg-white/10 w-full cursor-pointer hover:bg-white/20 transition-colors">
+                            <input type="radio" name="avatar_mode" value="upload" class="w-5 h-5 cursor-pointer accent-ink">
+                            
+                            <span class="text-sm uppercase tracking-tighter">Upload your own photo (max 2MB)</span>
+                            
+                            <input type="file" name="new_gambar" accept="image/*" 
+                                class="field flex-1 min-w-[200px] text-xs cursor-pointer file:mr-4 file:py-1 file:px-3 file:border-2 file:border-ink  file:font-black file:uppercase file:text-[10px] hover:file:bg-accent-yel/80">
+                        </label>
+                        </div>
+                    </fieldset>
+
+                    <button type="submit" class="w-full bg-gray-600 text-white py-2 rounded font-semibold text-sm hover:bg-gray-700 transition-colors">Save Changes</button>
+                </form>
+
+                <hr class="my-1 border-t border-gray-400">
+                <h4 class="font-extrabold text-sm text-gray-700">Delete Account</h4>
+                <form method="post" action="profile_delete.php"
+                      onsubmit="return confirm('Delete your account? This action cannot be undone.');"
+                      class="flex flex-col gap-2 text-sm">
+                    <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
+                    <label class="font-semibold flex flex-col gap-1">Type DELETE to confirm: 
+                        <input type="text" name="delete_confirm" required class="px-3 py-1 bg-gray-100 border border-gray-500 rounded text-sm">
+                    </label>
+                    <button type="submit" class="w-full bg-red-600 text-white py-1 rounded font-semibold hover:bg-red-700 transition-colors">Delete My Account</button>
+                </form>
+
+                <hr class="my-1 border-t border-gray-400">
+                <h4 class="font-extrabold text-sm text-gray-700">Logout</h4>
+                <a href="logout.php" class="w-full text-center bg-red-500 text-white py-1 rounded font-semibold text-sm hover:bg-red-600 transition-colors">↪ Logout</a>
+            </div>
+        </div>
+<!-- about -->
+       <div id="about-section" class="w-full max-w-4xl mt-4 hidden transition-all duration-300 ease-in-out transform scale-95 opacity-0 bg-gray-300 border-3 border-gray-900 rounded-sm shadow-[6px_6px_0px_0px_rgba(17,24,39,1)] p-6 text-gray-800">
+            <h3 class="text-2xl font-black border-b-3 pb-2 mb-4 border-gray-900 text-gray-900">About</h3>
+            
+            <p class="text-sm text-gray-700 leading-relaxed font-medium mb-6">
+                Tako Let's Eat! adalah game party multiplayer kompetitif yang random untuk 1 hingga 4
+                pemain. Di sini, para Takodachi yang kelaparan harus saling sikut demi memperebutkan
+                objek makanan yang muncul di arena. Persaingan berjalan dinamis karena setiap objek
+                memiliki efek acak yang instan—mulai dari memberikan Speed Boost untuk melesat cepat,
+                efek Freeze yang menghentikan pergerakan, hingga manipulasi poin yang bisa mengubah
+                jalannya pertandingan. Gunakan strategi terbaikmu, sabotase pemain lain, dan jadilah
+                Takodachi paling kenyang di arena!
+
+            </p>
+
+           <div class="border-t-2 border-dashed border-gray-600 pt-6 mt-6">
+                <h4 class="text-lg font-black text-gray-900 mb-4 uppercase tracking-wider">The Developers</h4>
+                
+                <div class="flex overflow-x-auto md:grid md:grid-cols-2 gap-6 px-2 pt-2 pb-6 snap-x snap-mandatory scrollbar-none md:overflow-x-visible">
+                    
+                    <button type="button" class="flex items-center text-left gap-4 bg-gray-100 p-4 border-2 border-gray-900 rounded-none shadow-[4px_4px_0px_0px_rgba(17,24,39,1)] w-[320px] md:w-full flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(17,24,39,1)] focus:outline-none">
+                        <img src="img/profile/aldi.webp" alt="Profile Dev 1" class="w-16 h-16 border-2 border-gray-900 object-cover rounded-none flex-shrink-0" />
+                        <div>
+                            <h5 class="font-bold text-base text-gray-900 leading-tight">Ahmad Aldy Noor Fadhillah</h5>
+                            <p class="text-xs font-black text-purple-700 uppercase tracking-wide mb-1">Frontend / Lead Designer</p>
+                            <p class="text-xs text-gray-600 leading-tight">Buzzer Tailwindcss.</p>
+                        </div>
+                    </button>
+
+                    <button type="button" class="flex items-center text-left gap-4 bg-gray-100 p-4 border-2 border-gray-900 rounded-none shadow-[4px_4px_0px_0px_rgba(17,24,39,1)] w-[320px] md:w-full flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(17,24,39,1)] focus:outline-none">
+                        <img src="img/profile/hafi.webp" alt="Profile Dev 2" class="w-16 h-16 border-2 border-gray-900 object-cover rounded-none flex-shrink-0" />
+                        <div>
+                            <h5 class="font-bold text-base text-gray-900 leading-tight">Muhammad Hafi Yudhani</h5>
+                            <p class="text-xs font-black text-emerald-700 uppercase tracking-wide mb-1">Backend / Socket / Game Logic</p>
+                            <p class="text-xs text-gray-600 leading-tight">Penggendong tim.</p>
+                        </div>
+                    </button>
+
+                    <button type="button" class="flex items-center text-left gap-4 bg-gray-100 p-4 border-2 border-gray-900 rounded-none shadow-[4px_4px_0px_0px_rgba(17,24,39,1)] w-[320px] md:w-full flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(17,24,39,1)] focus:outline-none">
+                        <img src="img/profile/rafa.webp" alt="Profile Dev 3" class="w-16 h-16 border-2 border-gray-900 object-cover rounded-none flex-shrink-0" />
+                        <div>
+                            <h5 class="font-bold text-base text-gray-900 leading-tight">Muhammad Rafa Farsha Irawan</h5>
+                            <p class="text-xs font-black text-blue-700 uppercase tracking-wide mb-1">Frontend / UI/UX Designer</p>
+                            <p class="text-xs text-gray-600 leading-tight">Telkomsel provider yahudi.</p>
+                        </div>
+                    </button>
+
+                    <button type="button" class="flex items-center text-left gap-4 bg-gray-100 p-4 border-2 border-gray-900 rounded-none shadow-[4px_4px_0px_0px_rgba(17,24,39,1)] w-[320px] md:w-full flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(17,24,39,1)] focus:outline-none">
+                        <img src="img/profile/riyadh.webp" alt="Profile Dev 4" class="w-16 h-16 border-2 border-gray-900 object-cover rounded-none flex-shrink-0" />
+                        <div>
+                            <h5 class="font-bold text-base text-gray-900 leading-tight">Muhammad Riyadh Najahi</h5>
+                            <p class="text-xs font-black text-amber-700 uppercase tracking-wide mb-1">Frontend</p>
+                            <p class="text-xs text-gray-600 leading-tight">Kyni ah.</p>
+                        </div>
+                    </button>
+
+                    <button type="button" class="flex items-center text-left gap-4 bg-gray-100 p-4 border-2 border-gray-900 rounded-none shadow-[4px_4px_0px_0px_rgba(17,24,39,1)] w-[320px] md:w-full md:col-span-2 max-w-md md:mx-auto flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(17,24,39,1)] focus:outline-none">
+                        <img src="img/profile/raihan.webp" alt="Profile Dev 5" class="w-16 h-16 border-2 border-gray-900 object-cover rounded-none flex-shrink-0" />
+                        <div>
+                            <h5 class="font-bold text-base text-gray-900 leading-tight">Muhammad Raihan Ardhani</h5>
+                            <p class="text-xs font-black text-rose-700 uppercase tracking-wide mb-1">Statistik & Analisis Data</p>
+                            <p class="text-xs text-gray-600 leading-tight">Mafia Leader Astambul Company.</p>
+                        </div>
+                    </button>
+
+                </div>
+            </div>
+        </div>      
     </div>
-</details>
 
-<!-- Chat box lobby (DIPERBESAR) -->
-<div id="chat-box" class="chat-box h-[480px] md:h-[560px]">
-    <?php while ($p = mysqli_fetch_assoc($messages)): ?>
-        <p>
-            <img src="<?= e(avatar_url($p['gambar'])) ?>" width="20" height="20" class="rounded-full object-cover">
-            <strong><?= e($p['nama']) ?></strong>: <?= e($p['isi_pesan']) ?>
-        </p>
-    <?php endwhile; ?>
-</div>
+</main>
 
-<div class="w-full max-w-[960px] mt-3 flex gap-2">
-    <input type="text" id="message" placeholder="Write a lobby message..." class="field flex-1 mt-0">
-    <button onclick="sendLobby()" class="btn">Send</button>
-</div>
-
-<hr class="w-full max-w-[960px] my-6 border-t border-ink/30">
-
-<div class="w-full max-w-[960px] flex items-center justify-between gap-3 mb-2">
-    <h3 class="h-section m-0">Private Rooms</h3>
-    <a href="statistik.php" class="btn inline-flex items-center gap-2" title="Lihat riwayat statistik permainan">
-        📊 <span>Riwayat Statistik</span>
-    </a>
-</div>
-
-<div id="rooms-container" class="w-full max-w-[960px] grid gap-4 mt-2"
-     style="grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));">
-<?php foreach ($rooms as $room): ?>
-    <?php $roomName = $room['name'] ?? ('Room #' . $room['id']); ?>
-    <div id="room-card-<?= $room['id'] ?>" class="room-card">
-        <h4>😴 <?= e($roomName) ?></h4>
-        <p id="owner-info-<?= $room['id'] ?>" class="text-sm text-inkMuted m-0">
-            <?php if ($room['is_occupied'] === 1 && $room['owner_name'] !== ''): ?>
-                Current owner: <?= e($room['owner_name']) ?>
-            <?php else: ?>
-                No owner yet.
-            <?php endif; ?>
-        </p>
-        <form method="post" action="room_enter.php" id="form-room-<?= $room['id'] ?>" class="flex flex-col gap-2 m-0">
-            <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
-            <input type="hidden" name="room_id" value="<?= $room['id'] ?>">
-            <input type="password" name="room_pass" placeholder="Password for Room <?= e($roomName) ?>" required class="field">
-            <span id="room-actions-<?= $room['id'] ?>">
-                <?php if ($room['is_occupied'] === 0): ?>
-                    <button type="submit" class="btn w-full">Enter &amp; Become Owner</button>
-                <?php else: ?>
-                    <button type="button" onclick="ketukPintu(<?= $room['id'] ?>)" class="btn w-full">Request to Join</button>
-                <?php endif; ?>
-            </span>
-        </form>
-    </div>
-<?php endforeach; ?>
+<div class="fixed bottom-0 right-0 w-80 h-80 z-0 pointer-events-none hidden md:block animate-peep overflow-hidden">
+    <img src="img/ssrb.png" alt="SSRB Mascot" class="w-full h-full object-contain origin-bottom">
 </div>
 
 <script>
@@ -154,6 +301,71 @@ window.__LOBBY_CONFIG__ = {
     csrfToken: <?= json_encode(csrf_token()) ?>,
     initialCooldowns: <?= json_encode($initialCooldowns) ?>
 };
+
+document.addEventListener("DOMContentLoaded", function() {
+    const hostBtn = document.getElementById("host-btn");
+    const roomsSection = document.getElementById("private-rooms-section");
+
+    const joinBtn = document.getElementById("join-btn");
+    const joinSection = document.getElementById("join-room-section");
+    
+    const settingBtn = document.getElementById("setting-btn");
+    const settingSection = document.getElementById("setting-section");
+
+    const aboutBtn = document.getElementById("about-btn");
+    const aboutSection = document.getElementById("about-section");
+    
+    const placeholder = document.getElementById("pilih-menu-placeholder");
+
+    const allSections = [roomsSection, joinSection, settingSection, aboutSection];
+
+    function hideAllSectionsExcept(activeSection) {
+        allSections.forEach(section => {
+            if (section !== activeSection && !section.classList.contains("hidden")) {
+                section.classList.add("opacity-0", "scale-95");
+                setTimeout(() => {
+                    section.classList.add("hidden");
+                }, 300);
+            }
+        });
+    }
+
+    function toggleSection(section) {
+        hideAllSectionsExcept(section);
+        
+        if (section.classList.contains("hidden")) {
+            placeholder.classList.add("hidden");
+            section.classList.remove("hidden");
+            setTimeout(() => {
+                section.classList.add("opacity-100", "scale-100");
+                section.classList.remove("opacity-0", "scale-95");
+            }, 10);
+        } else {
+            section.classList.add("opacity-0", "scale-95");
+            section.classList.remove("opacity-100", "scale-100");
+            setTimeout(() => {
+                section.classList.add("hidden");
+                placeholder.classList.remove("hidden");
+            }, 300);
+        }
+    }
+
+    if (hostBtn) {
+        hostBtn.addEventListener("click", () => toggleSection(roomsSection));
+    }
+    
+    if (joinBtn) {
+        joinBtn.addEventListener("click", () => toggleSection(joinSection));
+    }
+
+    if (settingBtn) {
+        settingBtn.addEventListener("click", () => toggleSection(settingSection));
+    }
+
+    if (aboutBtn) {
+        aboutBtn.addEventListener("click", () => toggleSection(aboutSection));
+    }
+});
 
 // UX: ketika user klik radio preset/upload, otomatis pilih mode-nya.
 (function(){
@@ -178,4 +390,5 @@ window.__LOBBY_CONFIG__ = {
 })();
 </script>
 <script src="js/lobby.js"></script>
+
 <?php include __DIR__ . '/footer.php'; ?>

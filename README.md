@@ -14,3 +14,8 @@ seed Room 1-5 dengan password `room1`..`room5`.
 - Login pakai Nama+NPM tanpa password hash (sesuai versi original).
 - cara tambah bgm taruh di folder bgm dan edit di manifest.json
 # ClickTheCircle
+
+Tgl May 03 2026
+
+update scroll ketika bermain game, dan kunci layar agar tidak bergerak, juga menambahkan rounded ke dalam div2 agar tidak kotak2.
+tambah fungsi kick oleh host di dalam game. juga optimalisasi buat mobile jadi analognnya tidak menghalangi ketika bermain game

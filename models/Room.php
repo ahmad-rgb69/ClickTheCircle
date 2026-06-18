@@ -18,11 +18,11 @@ class Room
      * Tampilan UI memakai nama-nama ini, bukan "Room 1", "Room 2", dst.
      */
     public const NAMES = [
-        1 => 'mo koi nante shinai',
-        2 => 'saya akan lawan',
-        3 => 'hidup jo-',
-        4 => 'saya akan kembali ke oslo sebagai rakyat biasa',
-        5 => 'akan terbuka 19 juta lapangan bola',
+        1 => 'Room 1',
+        2 => 'Room 2',
+        3 => 'Room 3',
+        4 => 'Room 4',
+        5 => 'Room 5',
     ];
 
     /** Ambil nama room berdasarkan ID. Fallback "Room #<id>" kalau tidak ada. */

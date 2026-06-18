@@ -39,6 +39,10 @@ CREATE TABLE IF NOT EXISTS game_scores (
     player_label VARCHAR(32) NOT NULL,
     score INT NOT NULL DEFAULT 0,
     is_winner TINYINT(1) NOT NULL DEFAULT 0,
+    avg_reaction_ms INT NOT NULL DEFAULT 0,
+    consistency_ms INT NOT NULL DEFAULT 0,
+    change_after5_ms INT NOT NULL DEFAULT 0,
+    hits_count INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_score_session (session_id),
     CONSTRAINT fk_score_session FOREIGN KEY (session_id) REFERENCES game_sessions(id) ON DELETE CASCADE

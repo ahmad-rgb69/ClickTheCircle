@@ -274,14 +274,6 @@
     // Hanya dipakai owner: input dari user remote, key = userId
     const remoteInputs = new Map();
 
-    // ---- Statistik reaksi (owner-only) ----
-    // reactionLog: list { slot, label, ms, idx } untuk dikirim ke server saat game berakhir.
-    // reactionHitIdx: counter urutan hit per slot (1,2,3,...).
-    // lastSessionId: id sesi terakhir yang berhasil disimpan (untuk tombol "Lihat Statistik").
-    const reactionLog = [];
-    const reactionHitIdx = new Map();
-    let lastSessionId = null;
-
     // ---------- Helpers ----------
     function boxesNeeded(n) {
         var b = 3 + (n | 0);
@@ -615,13 +607,17 @@
         
 
 
-        // Reconcile: tarik halus ke posisi otoritatif terbaru (smoothing 20%/frame)
+        // Reconcile: tarik halus ke posisi otoritatif terbaru HANYA jika meleset jauh
+        // (ini menghilangkan rasa "lag" atau "ditarik mundur" saat bermain).
         const last = snapBuf[snapBuf.length - 1];
         if (last) {
             const auth = last.players.find(p => p.seat === localPred.seat);
             if (auth) {
-                localPred.x = lerp(localPred.x, auth.x, 0.18);
-                localPred.y = lerp(localPred.y, auth.y, 0.18);
+                const distSq = (localPred.x - auth.x) ** 2 + (localPred.y - auth.y) ** 2;
+                if (distSq > 900) { // Jika selisih posisi server > 30px, lakukan koreksi
+                    localPred.x = lerp(localPred.x, auth.x, 0.25);
+                    localPred.y = lerp(localPred.y, auth.y, 0.25);
+                }
             }
         }
     }
@@ -656,10 +652,6 @@
             return;
         }
         state.boxes = [];
-        // Reset buffer reaksi (untuk statistik). Setiap pemain punya counter hitIdx sendiri.
-        reactionLog.length = 0;
-        reactionHitIdx.clear();
-        lastSessionId = null;
         const need = boxesNeeded(state.players.length);
         for (let i = 0; i < need; i++) 
             state.boxes.push(spawnBox(cfg));
@@ -668,6 +660,7 @@
 
         state.timeLeft = gameDuration;
         state.running = true;
+        state.recordedReactions = [];
         elapsedAcc = 0;
         snapAcc = 0;
         lastTs = performance.now();
@@ -1118,6 +1111,18 @@
                     const t = boxTypeOf(b.kind, state.diff);
                     // Skor (boleh negatif untuk penalty); jangan biarkan turun di bawah 0.
                     p.score = Math.max(0, (p.score | 0) + (t.score | 0));
+                    
+                    // Rekam reaction time untuk kotak berskor positif
+                    if (t.score > 0) {
+                        p.hitCount = (p.hitCount || 0) + 1;
+                        state.recordedReactions.push({
+                            slot: p.seat,
+                            label: p.name,
+                            ms: Math.round(performance.now() - (b.bornAt || performance.now())),
+                            idx: p.hitCount
+                        });
+                    }
+
                     // Efek tambahan
                     const nowMs = performance.now();
                     if (t.freezeMs) 
@@ -1136,14 +1141,6 @@
                         p.boostUntil = nowMs + t.boostMs;
                     
 
-
-                    // Catat reaction time: berapa lama box ini ada di arena sampai diambil.
-                    // Hanya untuk box yang memang "memberi nilai" (skip kalau t.score == 0 dan bukan bonus tetap dihitung).
-                    // Pakai semua box supaya statistik mencakup keputusan pemain (termasuk hindari/penalty).
-                    const reactMs = Math.max(0, Math.round(performance.now() - (b.bornAt || performance.now())));
-                    const nextIdx = (reactionHitIdx.get(p.seat) || 0) + 1;
-                    reactionHitIdx.set(p.seat, nextIdx);
-                    reactionLog.push({ slot: p.seat, label: p.name, ms: reactMs, idx: nextIdx });
 
                     // Reset klaim AI utk box yang baru saja diambil
                     for (const other of state.players) {
@@ -1203,7 +1200,7 @@
         renderScores();
         updateTimerUI();
         const playersPayload = state.players.map(p => ({seat: p.seat, name: p.name, score: p.score}));
-        sendWS({type: 'game_ended', room_id: RC.roomId, message: msg, players: playersPayload, stats: computeLocalStats()});
+        sendWS({type: 'game_ended', room_id: RC.roomId, message: msg, players: playersPayload});
         saveSessionToServer();
         // Tampilkan modal custom (TIDAK auto-reset). Reset dilakukan lewat tombol Reset di room.
         setRoomControlsLocked(true);
@@ -1211,11 +1208,10 @@
     }
 
     function saveSessionToServer() {
-        if (! RC.saveUrl || ! RC.roomId)
+        if (! RC.saveUrl || ! RC.roomId) 
             return;
+        
 
-        // Snapshot reactions sekarang (jangan await — buffer di-clear oleh ownerStart berikutnya).
-        const reactionsPayload = reactionLog.slice();
 
         fetch(RC.saveUrl, {
             method: 'POST',
@@ -1230,38 +1226,32 @@
                     num_players: state.players.length,
                     duration_sec: gameDuration,
                     scores: state.players.map(p => ({slot: p.seat, label: p.name, score: p.score})),
-                    reactions: reactionsPayload
+                    reactions: state.recordedReactions || []
                 }
             )
-        }).then(r => r.json()).then(j => {
-            if (j && j.ok && j.session_id) {
-                lastSessionId = j.session_id | 0;
-                // Update tombol "Lihat Statistik" + ringkasan stats di modal kalau modal terbuka.
-                refreshEndModalStats(j.stats || null);
-                // Broadcast session_id ke semua pemain supaya mereka juga bisa buka halaman statistik.
-                sendWS({type: 'game_session_id', room_id: RC.roomId, session_id: lastSessionId, stats: j.stats || null});
-            }
         }).catch(() => {});
     }
 
     // ---------- Non-owner: kirim input + render dari snapshot ----------
     let inputSendTimer = null;
+    function sendCurrentInput() {
+        if (!state.running || !RC.roomId || isOwner) return;
+        sendWS({
+            type: 'game_input',
+            room_id: RC.roomId,
+            user_id: RC.myId,
+            input: {
+                ... localInput
+            }
+        });
+    }
+
     function startInputSender() {
         if (inputSendTimer) 
             return;
         
 
-
-        inputSendTimer = setInterval(() => {
-            sendWS({
-                type: 'game_input',
-                room_id: RC.roomId,
-                user_id: RC.myId,
-                input: {
-                    ... localInput
-                }
-            });
-        }, 50);
+        inputSendTimer = setInterval(sendCurrentInput, 50);
     }
     function stopInputSender() {
         if (inputSendTimer) {
@@ -1478,87 +1468,6 @@
     const endHeadlineEl = document.getElementById('end-modal-headline');
     const endHintEl = document.getElementById('end-modal-hint');
     const endOkBtn = document.getElementById('end-modal-ok');
-    const endStatsBtn = document.getElementById('end-modal-stats');
-    const endStatsBox = document.getElementById('end-modal-stats-box');
-
-    // Hitung statistik sederhana dari reactionLog (untuk preview di modal sebelum
-    // server membalas / kalau server gagal). Server tetap sumber kebenaran via stats payload.
-    function computeLocalStats() {
-        const bySlot = new Map();
-        for (const r of reactionLog) {
-            if (!bySlot.has(r.slot)) bySlot.set(r.slot, []);
-            bySlot.get(r.slot).push(r.ms | 0);
-        }
-        const out = {};
-        for (const [slot, list] of bySlot) {
-            list.sort((a, b) => a - b);
-            const n = list.length;
-            if (!n) continue;
-            const sum = list.reduce((a, b) => a + b, 0);
-            const avg = Math.round(sum / n);
-            const cons = list[n - 1] - list[0];
-            // Re-fetch in original order for change-after-5
-            const ordered = reactionLog.filter(r => r.slot === slot).map(r => r.ms | 0);
-            let change = 0;
-            if (ordered.length >= 6) {
-                const f = ordered.slice(0, 5);
-                const l = ordered.slice(-5);
-                change = Math.round(l.reduce((a, b) => a + b, 0) / l.length - f.reduce((a, b) => a + b, 0) / f.length);
-            }
-            out[slot] = { avg, cons, change, count: n };
-        }
-        return out;
-    }
-
-    function renderStatsBox(statsObj, players) {
-        if (!endStatsBox) return;
-        const rows = (players || []).map(p => {
-            const s = statsObj && statsObj[p.seat];
-            if (!s || !s.count) {
-                return `<tr><td>${escapeHtml(p.name)}</td><td colspan="3" style="opacity:.6">— belum cukup data —</td></tr>`;
-            }
-            const changeStr = s.change === 0
-                ? '0 ms'
-                : (s.change > 0 ? `+${s.change} ms (melambat)` : `${s.change} ms (lebih cepat)`);
-            const changeColor = s.change === 0 ? '#ddd' : (s.change > 0 ? '#e74c3c' : '#2ecc40');
-            return `<tr>
-                <td>${escapeHtml(p.name)}</td>
-                <td>${s.avg} ms</td>
-                <td>${s.cons} ms</td>
-                <td style="color:${changeColor}">${s.count >= 6 ? changeStr : '—'}</td>
-            </tr>`;
-        }).join('');
-        endStatsBox.innerHTML = `
-            <h3 class="end-modal__stats-title">Statistik Reaksi</h3>
-            <table class="end-modal__stats">
-              <thead><tr><th>Pemain</th><th>Rata-rata</th><th>Konsistensi</th><th>Perubahan setelah 5 hit</th></tr></thead>
-              <tbody>${rows || '<tr><td colspan="4" style="opacity:.6">Tidak ada data reaksi.</td></tr>'}</tbody>
-            </table>`;
-    }
-
-    function refreshEndModalStats(serverStats) {
-        if (!endModal || endModal.classList.contains('hidden')) return;
-        const players = endModal.__players || [];
-        renderStatsBox(serverStats || computeLocalStats(), players);
-        if (endStatsBtn) {
-            if (lastSessionId) {
-                endStatsBtn.style.display = '';
-                endStatsBtn.disabled = false;
-                endStatsBtn.dataset.session = String(lastSessionId);
-            } else {
-                endStatsBtn.style.display = '';
-                endStatsBtn.disabled = true;
-            }
-        }
-    }
-
-    if (endStatsBtn) {
-        endStatsBtn.addEventListener('click', () => {
-            const sid = endStatsBtn.dataset.session;
-            if (!sid) return;
-            window.open('statistik.php?session=' + encodeURIComponent(sid), '_blank', 'noopener');
-        });
-    }
 
     const roomLockControls = [
         ui.diffSel,
@@ -1700,20 +1609,6 @@
         endHintEl.textContent = isOwner ? '...' : '...';
         endModal.classList.remove('hidden');
         endModal.setAttribute('aria-hidden', 'false');
-        // Sisipkan ringkasan stats lokal segera; akan di-refresh ketika save() server balas.
-        endModal.__players = sorted;
-        if (isOwner) {
-            renderStatsBox(computeLocalStats(), sorted);
-            if (endStatsBtn) {
-                endStatsBtn.style.display = '';
-                endStatsBtn.disabled = !lastSessionId;
-                if (lastSessionId) endStatsBtn.dataset.session = String(lastSessionId);
-            }
-        } else {
-            // Non-owner: stats akan diisi dari data game_ended WebSocket.
-            // Tombol "Lihat Statistik" disembunyikan karena session_id hanya ada di owner.
-            if (endStatsBtn) endStatsBtn.style.display = 'none';
-        }
     }
     function closeEndModal() {
         if (! endModal) 
@@ -1822,6 +1717,7 @@
             if (KEYS[k] === code && localInput[k] !== val) {
                 localInput[k] = val;
                 changed = true;
+                if (!isOwner) sendCurrentInput(); // Kirim instan saat ditekan!
             }
         }
         return changed;
@@ -1900,22 +1796,6 @@
                 setRoomControlsLocked(false);
                 const players = Array.isArray(d.players) ? d.players : state.players.map(p => ({seat: p.seat, name: p.name, score: p.score}));
                 openEndModal(players, d.message || 'Waktu habis!');
-                // Tampilkan stats dari owner (dikirim via WebSocket)
-                if (d.stats) {
-                    renderStatsBox(d.stats, players);
-                }
-            } else if (d.type === 'game_session_id') {
-                // Owner broadcast session_id setelah save berhasil.
-                lastSessionId = d.session_id | 0;
-                if (d.stats) {
-                    refreshEndModalStats(d.stats);
-                }
-                // Tampilkan tombol "Lihat Statistik" untuk non-owner juga.
-                if (endStatsBtn && lastSessionId) {
-                    endStatsBtn.style.display = '';
-                    endStatsBtn.disabled = false;
-                    endStatsBtn.dataset.session = String(lastSessionId);
-                }
             } else if (d.type === 'game_reset') { // Bersihkan total tampilan untuk non-owner.
                 clearArenaToBlack();
                 gameDuration = gameDuration || 0;
@@ -2072,7 +1952,6 @@
             return;
         
 
-
         // "— Tanpa musik —"
         sendWS({type: 'bgm_start', room_id: RC.roomId, file: sel});
     }
@@ -2217,6 +2096,7 @@
             const resetKnob = () => {
                 joyKnob.style.transform = 'translate(0,0)';
                 localInput.up = localInput.down = localInput.left = localInput.right = false;
+                if (!isOwner && typeof sendCurrentInput === 'function') sendCurrentInput(); // Kirim instan!
             };
 
             const updateFromPoint = (clientX, clientY) => {
@@ -2251,6 +2131,7 @@
                 localInput.left = deg > 112.5 || deg < -112.5;
                 localInput.down = deg > 22.5 && deg < 157.5;
                 localInput.up = deg < -22.5 && deg > -157.5;
+                if (!isOwner) sendCurrentInput(); // Kirim instan!
             };
 
             joyWrap.addEventListener('pointerdown', (e) => {
@@ -2299,11 +2180,13 @@
                 e.preventDefault();
                 localInput.turbo = true;
                 turboBtn.classList.add('is-active');
+                if (!isOwner && typeof sendCurrentInput === 'function') sendCurrentInput();
             };
             const turboOff = (e) => {
                 e.preventDefault();
                 localInput.turbo = false;
                 turboBtn.classList.remove('is-active');
+                if (!isOwner && typeof sendCurrentInput === 'function') sendCurrentInput();
             };
             turboBtn.addEventListener('pointerdown', turboOn);
             turboBtn.addEventListener('pointerup', turboOff);
