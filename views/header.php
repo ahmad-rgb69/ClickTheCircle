@@ -44,21 +44,21 @@ $config = $config ?? require __DIR__ . '/../config.php';
       
       <button type="button" id="user-sidebar-close" class="absolute right-2 top-2 lg:hidden text-xl font-bold leading-none px-2 py-1" aria-label="Close profile">×</button>
 
-      <div class="font-pixel text-xs text-white text-center bg-ink/80 border border-ink rounded-xl py-2"
+      <div class="font-pixel text-xs text-white text-center bg-ink/80 border border-ink py-2"
           style="text-shadow: 1px 1px 0 #000;">
           PLAYER INFO
       </div>
-      <div class="font-pixel text-xs text-white text-center bg-ink/80 border border-ink rounded-xl py-2"
+      <div class="font-pixel text-xs text-white text-center bg-ink/80 border border-ink  py-2"
           style="text-shadow: 1px 1px 0 #000;">
           <a href="statistik.php">Player Statistik 📈</a>
       </div>
-      <div class="font-pixel text-xs text-black text-center bg-[#FFE5B4] border border-ink rounded-xl py-2 font-bold"
-          style="text-shadow: 1px 1px 0 rgba(255,255,255,0.8);">
+      <div class="font-pixel text-xs text-white text-center bg-ink/80 border border-ink py-2"
+          style="text-shadow: 1px 1px 0 #000;">
           <a href="leaderboard.php" class="block w-full h-full">Leaderboard 🏆</a>
       </div>
 
       <!-- Logged In Box -->
-      <div class="flex flex-col items-center gap-2 bg-control border border-ink rounded-xl p-3 shadow-inset1">
+      <div class="flex flex-col items-center gap-2 bg-control border border-ink  p-3 shadow-inset1">
           <div class="text-center">
               <div class="text-xs text-ink-muted">Logged in as</div>
               <div class="font-extrabold text-base break-all"><?= e($__sb_nama) ?></div>
@@ -66,8 +66,8 @@ $config = $config ?? require __DIR__ . '/../config.php';
       </div>
 
       <!-- Online Users Box -->
-      <div class="flex-1 min-h-0 flex flex-col bg-control border border-ink rounded-xl p-2 shadow-inset1">
-          <div class="font-pixel text-[10px] text-ink text-center bg-panel2 border border-ink rounded-xl py-1 mb-2">
+      <div class="flex-1 min-h-0 flex flex-col bg-control border border-ink  p-2 shadow-inset1">
+          <div class="font-pixel text-[10px] text-ink text-center bg-panel2 border border-ink  py-1 mb-2">
               ONLINE (<span id="online-users-count">0</span>)
           </div>
           <div id="online-users-list" class="flex flex-col gap-1 overflow-y-auto pr-1 text-sm text-ink">
@@ -76,7 +76,7 @@ $config = $config ?? require __DIR__ . '/../config.php';
       </div>
 
       <div class="text-[10px] text-ink-muted text-center leading-relaxed">
-          RRR Lite v4 — player info sidebar
+          Tako Lets Eat! - v1.0.5
       </div>
   </aside>
 

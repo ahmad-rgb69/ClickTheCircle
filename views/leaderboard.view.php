@@ -1,7 +1,7 @@
 <div class="w-full max-w-[1100px] mx-auto">
     <div class="h-section !max-w-full flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 !p-4">
         <h2 class="m-0 flex-1 font-extrabold text-xl sm:text-2xl tracking-wide">🏆 Global Leaderboard</h2>
-        <a href="lobby.php" class="btn whitespace-nowrap shrink-0 transition-all duration-100 hover:tombol_animasi">← Kembali ke Lobby</a>
+        <a href="lobby.php" class="btn whitespace-nowrap shrink-0 duration-100 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all text-center cursor-pointer rounded">← Kembali ke Lobby</a>
     </div>
 
     <div class="panel-box p-4 mb-8 flex flex-col gap-4 bg-panel2">

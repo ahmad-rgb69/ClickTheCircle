@@ -33,34 +33,34 @@ $presetItems   = avatar_presets_list();
     <div class="w-full lg:w-4/12 flex flex-col gap-6 z-10">
         
         <button type="button" id="lobby-profile-open"
-                class="flex justify-between items-center bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2 border-gray-600 shadow-md hover:bg-gray-200 transition-colors cursor-pointer rounded"
+                class="flex justify-between items-center bg-gray-300 text-gray-800 py-4 px-6 text-xl font-semi border-2 border-gray-600 shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-gray-200 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 cursor-pointer rounded"
                 aria-controls="user-sidebar" aria-expanded="false">
             <span class="flex-1 text-left">Hi, <strong><?= e($_SESSION['nama']) ?></strong>!</span>
        
         </button>
 
-        <button id="host-btn" class="w-full bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2 border-gray-600 shadow-md hover:bg-gray-200 transition-colors text-center cursor-pointer rounded">
+        <button id="host-btn" class="w-full bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2  border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-gray-200 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 cursor-pointer rounded">
             Host & Join Room
         </button>
 
-        <button id="join-btn" class="w-full hidden bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2 border-gray-600 shadow-md hover:bg-gray-200 transition-colors text-center cursor-pointer rounded">
+        <button id="join-btn" class="w-full hidden bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-gray-200 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 text-center cursor-pointer rounded">
             Join Room
         </button>
 
-        <a href="leaderboard.php" class="block w-full bg-[#FFE5B4] text-black py-4 px-6 text-xl font-black border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-center cursor-pointer rounded">
-            🏆 Leaderboard
+        <a href="leaderboard.php" class="block w-full bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:shadow-none active:translate-x-1 active:translate-y-1 transition-all text-center cursor-pointer rounded">
+            Leaderboard
         </a>
 
-        <button id="setting-btn" class="w-full bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2 border-gray-600 shadow-md hover:bg-gray-200 transition-colors text-center cursor-pointer rounded">
-            Setting
+        <button id="setting-btn" class="w-full bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-gray-200 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 text-center cursor-pointer rounded">
+            Settings
         </button>
 
-        <button id="about-btn" class="w-full bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2 border-gray-600 shadow-md hover:bg-gray-200 transition-colors text-center cursor-pointer rounded">
+        <button id="about-btn" class="w-full bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-gray-200 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 text-center cursor-pointer rounded">
             About
         </button>
 
-        <div class="w-full bg-gray-400 border-2 border-gray-600 p-2 flex flex-col h-[280px] rounded shadow-inner">
-            <div class="bg-gray-300 text-gray-700 text-xs px-2 py-1 font-semibold border-b border-gray-500 rounded-t">
+        <div class="w-full bg-gray-400 border-2 border-gray-600 p-2 flex flex-col h-[280px] border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-gray-800 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 text-center cursor-pointer rounded">
+            <div class="bg-gray-300 text-gray-700 text-xs px-2 py-1 font-semibold border-b border-gray-500">
                 Chat box
             </div>
             <div id="chat-box" class="flex-1 bg-gray-300 p-2 text-gray-500 text-xs overflow-y-auto">
@@ -216,17 +216,74 @@ $presetItems   = avatar_presets_list();
                 <a href="logout.php" class="w-full text-center bg-red-500 text-white py-1 rounded font-semibold text-sm hover:bg-red-600 transition-colors">↪ Logout</a>
             </div>
         </div>
-
-        <div id="about-section" class="w-full max-w-4xl mt-2 hidden transition-all duration-300 ease-in-out transform scale-95 opacity-0 bg-gray-300 border-2 border-gray-600 rounded-md shadow-xl p-6 text-gray-800">
-            <h3 class="text-2xl font-bold border-b pb-2 mb-4 border-gray-500 text-gray-700">About</h3>
-            <p class="text-xs text-gray-600 leading-relaxed">
-                ClickTheCircle adalah game adu ketangkasan berbasis web yang dirancang untuk menguji kecepatan reaksi dan akurasi.
-                Di game ini, pemain bisa duel secara real-time bareng pemain lain dalam satu ruangan (private room). Intinya simpel: Siapa yang paling cepat dapat target dan poin paling tinggi, dia yang menang.
-                Dikembangkan dengan gaya visual Neubrutalism, game ini fokus pada gameplay yang kompetitif, kustomisasi penuh, dan performa yang responsif.
+<!-- about -->
+       <div id="about-section" class="w-full max-w-4xl mt-4 hidden transition-all duration-300 ease-in-out transform scale-95 opacity-0 bg-gray-300 border-3 border-gray-900 rounded-sm shadow-[6px_6px_0px_0px_rgba(17,24,39,1)] p-6 text-gray-800">
+            <h3 class="text-2xl font-black border-b-3 pb-2 mb-4 border-gray-900 text-gray-900">About</h3>
+            
+            <p class="text-sm text-gray-700 leading-relaxed font-medium mb-6">
+                Tako Let's Eat! adalah game party multiplayer kompetitif yang random untuk 1 hingga 4
+                pemain. Di sini, para Takodachi yang kelaparan harus saling sikut demi memperebutkan
+                objek makanan yang muncul di arena. Persaingan berjalan dinamis karena setiap objek
+                memiliki efek acak yang instan—mulai dari memberikan Speed Boost untuk melesat cepat,
+                efek Freeze yang menghentikan pergerakan, hingga manipulasi poin yang bisa mengubah
+                jalannya pertandingan. Gunakan strategi terbaikmu, sabotase pemain lain, dan jadilah
+                Takodachi paling kenyang di arena!
 
             </p>
-        </div>
-        
+
+           <div class="border-t-2 border-dashed border-gray-600 pt-6 mt-6">
+                <h4 class="text-lg font-black text-gray-900 mb-4 uppercase tracking-wider">The Developers</h4>
+                
+                <div class="flex overflow-x-auto md:grid md:grid-cols-2 gap-6 px-2 pt-2 pb-6 snap-x snap-mandatory scrollbar-none md:overflow-x-visible">
+                    
+                    <button type="button" class="flex items-center text-left gap-4 bg-gray-100 p-4 border-2 border-gray-900 rounded-none shadow-[4px_4px_0px_0px_rgba(17,24,39,1)] w-[320px] md:w-full flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(17,24,39,1)] focus:outline-none">
+                        <img src="img/profile/aldi.webp" alt="Profile Dev 1" class="w-16 h-16 border-2 border-gray-900 object-cover rounded-none flex-shrink-0" />
+                        <div>
+                            <h5 class="font-bold text-base text-gray-900 leading-tight">Ahmad Aldy Noor Fadhillah</h5>
+                            <p class="text-xs font-black text-purple-700 uppercase tracking-wide mb-1">Frontend / Lead Designer</p>
+                            <p class="text-xs text-gray-600 leading-tight">Buzzer Tailwindcss.</p>
+                        </div>
+                    </button>
+
+                    <button type="button" class="flex items-center text-left gap-4 bg-gray-100 p-4 border-2 border-gray-900 rounded-none shadow-[4px_4px_0px_0px_rgba(17,24,39,1)] w-[320px] md:w-full flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(17,24,39,1)] focus:outline-none">
+                        <img src="img/profile/hafi.webp" alt="Profile Dev 2" class="w-16 h-16 border-2 border-gray-900 object-cover rounded-none flex-shrink-0" />
+                        <div>
+                            <h5 class="font-bold text-base text-gray-900 leading-tight">Muhammad Hafi Yudhani</h5>
+                            <p class="text-xs font-black text-emerald-700 uppercase tracking-wide mb-1">Backend / Socket / Game Logic</p>
+                            <p class="text-xs text-gray-600 leading-tight">Penggendong tim.</p>
+                        </div>
+                    </button>
+
+                    <button type="button" class="flex items-center text-left gap-4 bg-gray-100 p-4 border-2 border-gray-900 rounded-none shadow-[4px_4px_0px_0px_rgba(17,24,39,1)] w-[320px] md:w-full flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(17,24,39,1)] focus:outline-none">
+                        <img src="img/profile/rafa.webp" alt="Profile Dev 3" class="w-16 h-16 border-2 border-gray-900 object-cover rounded-none flex-shrink-0" />
+                        <div>
+                            <h5 class="font-bold text-base text-gray-900 leading-tight">Muhammad Rafa Farsha Irawan</h5>
+                            <p class="text-xs font-black text-blue-700 uppercase tracking-wide mb-1">Frontend / UI/UX Designer</p>
+                            <p class="text-xs text-gray-600 leading-tight">Telkomsel provider yahudi.</p>
+                        </div>
+                    </button>
+
+                    <button type="button" class="flex items-center text-left gap-4 bg-gray-100 p-4 border-2 border-gray-900 rounded-none shadow-[4px_4px_0px_0px_rgba(17,24,39,1)] w-[320px] md:w-full flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(17,24,39,1)] focus:outline-none">
+                        <img src="img/profile/riyadh.webp" alt="Profile Dev 4" class="w-16 h-16 border-2 border-gray-900 object-cover rounded-none flex-shrink-0" />
+                        <div>
+                            <h5 class="font-bold text-base text-gray-900 leading-tight">Muhammad Riyadh Najahi</h5>
+                            <p class="text-xs font-black text-amber-700 uppercase tracking-wide mb-1">Frontend</p>
+                            <p class="text-xs text-gray-600 leading-tight">Kyni ah.</p>
+                        </div>
+                    </button>
+
+                    <button type="button" class="flex items-center text-left gap-4 bg-gray-100 p-4 border-2 border-gray-900 rounded-none shadow-[4px_4px_0px_0px_rgba(17,24,39,1)] w-[320px] md:w-full md:col-span-2 max-w-md md:mx-auto flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(17,24,39,1)] focus:outline-none">
+                        <img src="img/profile/raihan.webp" alt="Profile Dev 5" class="w-16 h-16 border-2 border-gray-900 object-cover rounded-none flex-shrink-0" />
+                        <div>
+                            <h5 class="font-bold text-base text-gray-900 leading-tight">Muhammad Raihan Ardhani</h5>
+                            <p class="text-xs font-black text-rose-700 uppercase tracking-wide mb-1">Statistik & Analisis Data</p>
+                            <p class="text-xs text-gray-600 leading-tight">Mafia Leader Astambul Company.</p>
+                        </div>
+                    </button>
+
+                </div>
+            </div>
+        </div>      
     </div>
 
 </main>
