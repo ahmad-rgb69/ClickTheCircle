@@ -14,17 +14,54 @@ $presetItems   = avatar_presets_list();
 ?>
 
 <style>
-    @keyframes peep {
-        0%, 100% {
-            transform: translateY(100%); /* Tersembunyi di bawah */
+    @keyframes tako-patroli {
+        /* ========================================================= */
+        /* PERJALANAN KE KIRI (Tako Membalik Badan Menghadap Kiri: scaleX(-1)) */
+        /* ========================================================= */
+        0% { 
+            transform: translateX(110vw) translateY(25px) scaleX(-1) rotate(0deg); 
         }
-        10%, 90% {
-            transform: translateY(30%);    /* Muncul penuh */
+        5% { transform: translateX(95vw) translateY(10px) scaleX(-1) rotate(-3deg); }
+        10% { transform: translateX(80vw) translateY(25px) scaleX(-1) rotate(3deg); }
+        15% { transform: translateX(65vw) translateY(10px) scaleX(-1) rotate(-3deg); }
+        20% { transform: translateX(50vw) translateY(25px) scaleX(-1) rotate(3deg); }
+        25% { transform: translateX(35vw) translateY(10px) scaleX(-1) rotate(-3deg); }
+        30% { transform: translateX(20vw) translateY(25px) scaleX(-1) rotate(3deg); }
+        35% { transform: translateX(5vw) translateY(10px) scaleX(-1) rotate(-3deg); }
+        40% { transform: translateX(-10vw) translateY(25px) scaleX(-1) rotate(3deg); }
+        45% { 
+            /* Sampai di ujung kiri luar layar, bersiap putar balik */
+            transform: translateX(-20vw) translateY(10px) scaleX(-1) rotate(0deg); 
+        }
+
+        /* ========================================================= */
+        /* PROSES PUTAR BALIK DI UJUNG KIRI (Berubah Menghadap Kanan: scaleX(1)) */
+        /* ========================================================= */
+        46% { 
+            transform: translateX(-20vw) translateY(10px) scaleX(1) rotate(0deg); 
+        }
+
+        /* ========================================================= */
+        /* PERJALANAN KEMBALI KE KANAN (Tako Menghadap Kanan: scaleX(1)) */
+        /* ========================================================= */
+        50% { transform: translateX(-5vw) translateY(25px) scaleX(1) rotate(3deg); }
+        55% { transform: translateX(10vw) translateY(10px) scaleX(1) rotate(-3deg); }
+        60% { transform: translateX(25vw) translateY(25px) scaleX(1) rotate(3deg); }
+        65% { transform: translateX(40vw) translateY(10px) rotate(-3deg); }
+        70% { transform: translateX(55vw) translateY(25px) scaleX(1) rotate(3deg); }
+        75% { transform: translateX(70vw) translateY(10px) scaleX(1) rotate(-3deg); }
+        80% { transform: translateX(85vw) translateY(25px) scaleX(1) rotate(3deg); }
+        85% { transform: translateX(100vw) translateY(10px) scaleX(1) rotate(-3deg); }
+        90% { transform: translateX(110vw) translateY(25px) scaleX(1) rotate(3deg); }
+        100% { 
+            /* Sampai di ujung kanan luar layar semula */
+            transform: translateX(120vw) translateY(25px) scaleX(1) rotate(0deg); 
         }
     }
 
-    .animate-peep {
-        animation: peep 5s ease-in-out infinite;
+    .animate-tako-walk {
+        /* Waktu total satu siklus PP (Pulang-Pergi) dibuat 25 detik agar jalannya santai dan pas */
+        animation: tako-patroli 25s linear infinite;
     }
 </style>
 
@@ -34,36 +71,44 @@ $presetItems   = avatar_presets_list();
 
 <main class="flex flex-col lg:flex-row items-stretch justify-between max-w-7xl mx-auto w-full gap-8 px-4 py-8 mb-10 relative bg-[#1A1A3A]/40 rounded-xl backdrop-blur-sm">
 
+    <!-- Kolom Kiri: Navigasi & Chat Box -->
     <div class="w-full lg:w-4/12 flex flex-col gap-6 z-10">
         
+        <!-- Profile Button -->
         <button type="button" id="lobby-profile-open"
-                class="flex justify-between items-center bg-gray-300 text-gray-800 py-4 px-6 text-xl font-semi border-2 border-gray-600 shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-gray-200 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 cursor-pointer rounded"
+                class="flex justify-between items-center bg-[#41478B] text-[#FFFFF6] py-4 px-6 text-xl font-bold border-2 border-[#1A1A3A] shadow-[4px_4px_0_0_rgba(26,26,58,1)] hover:bg-[#B57DDA] hover:text-[#1A1A3A] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 cursor-pointer rounded"
                 aria-controls="user-sidebar" aria-expanded="false">
             <span class="flex-1 text-left">Hi, <strong><?= e($_SESSION['nama']) ?></strong>!</span>
         </button>
 
-        <button id="host-btn" class="w-full bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2  border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-gray-200 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 cursor-pointer rounded">
-            Host & Join Room
+        <!-- Host Button -->
+        <button id="host-btn" class="w-full bg-[#32366A] text-[#FFFFF6] py-4 px-6 text-xl font-bold border-2 border-[#1A1A3A] shadow-[4px_4px_0_0_rgba(26,26,58,1)] hover:bg-[#B57DDA] hover:text-[#1A1A3A] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 cursor-pointer rounded">
+            Host &amp; Join Room
         </button>
 
-        <button id="join-btn" class="w-full hidden bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-gray-200 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 text-center cursor-pointer rounded">
+        <!-- Hidden Join Button -->
+        <button id="join-btn" class="w-full hidden bg-[#32366A] text-[#FFFFF6] py-4 px-6 text-xl font-bold border-2 border-[#1A1A3A] shadow-[4px_4px_0_0_rgba(26,26,58,1)] hover:bg-[#B57DDA] hover:text-[#1A1A3A] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 text-center cursor-pointer rounded">
             Join Room
         </button>
 
-        <a href="leaderboard.php" class="block w-full bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:shadow-none active:translate-x-1 active:translate-y-1 transition-all text-center cursor-pointer rounded">
-            Leaderboard
+        <!-- Leaderboard Link -->
+        <a href="leaderboard.php" class="block w-full bg-[#B57DDA] text-[#1A1A3A] py-4 px-6 text-xl font-black border-2 border-[#1A1A3A] shadow-[4px_4px_0_0_rgba(26,26,58,1)] hover:shadow-none active:translate-x-1 active:translate-y-1 transition-all text-center cursor-pointer rounded">
+            Leaderboard 🏆
         </a>
 
-        <button id="setting-btn" class="w-full bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-gray-200 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 text-center cursor-pointer rounded">
+        <!-- Settings Button -->
+        <button id="setting-btn" class="w-full bg-[#32366A] text-[#FFFFF6] py-4 px-6 text-xl font-bold border-2 border-[#1A1A3A] shadow-[4px_4px_0_0_rgba(26,26,58,1)] hover:bg-[#B57DDA] hover:text-[#1A1A3A] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 text-center cursor-pointer rounded">
             Settings
         </button>
 
-        <button id="about-btn" class="w-full bg-gray-300 text-gray-800 py-4 px-6 text-xl font-bold border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-gray-200 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 text-center cursor-pointer rounded">
+        <!-- About Button -->
+        <button id="about-btn" class="w-full bg-[#32366A] text-[#FFFFF6] py-4 px-6 text-xl font-bold border-2 border-[#1A1A3A] shadow-[4px_4px_0_0_rgba(26,26,58,1)] hover:bg-[#B57DDA] hover:text-[#1A1A3A] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 text-center cursor-pointer rounded">
             About
         </button>
 
-        <div class="w-full bg-gray-400 border-2 border-gray-600 p-2 flex flex-col h-[280px] border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-gray-800 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-75 text-center cursor-pointer rounded">
-            <div class="bg-gray-300 text-gray-700 text-xs px-2 py-1 font-semibold border-b border-gray-500">
+        <!-- Chat Box Container -->
+        <div class="w-full bg-[#242752] border-2 border-[#1A1A3A] p-2 flex flex-col h-[280px] shadow-[4px_4px_0_0_rgba(26,26,58,1)] rounded">
+            <div class="bg-[#41478B] text-[#B57DDA] text-xs px-2 py-1 font-bold border-b border-[#1A1A3A] rounded-t">
                 Chat box
             </div>
             <div id="chat-box" class="flex-1 bg-[#1A1A3A] p-2 text-[#E8E2D4] text-xs overflow-y-auto">
@@ -81,16 +126,18 @@ $presetItems   = avatar_presets_list();
         </div>
     </div>
 
+    <!-- Kolom Kanan: Area Detail Pop-up -->
     <div class="w-full lg:w-8/12 flex flex-col gap-6 items-center justify-start relative z-10">
         
         <div class="w-full max-w-4xl flex justify-center">
-            <!-- Mengubah w-full menjadi max-w-md agar lebih proporsional, serta menghapus border-4 dan shadow-xl -->
              <img src="img/newlogo.png" alt="Tako Let's Eat!" class="w-full max-w-md h-auto object-contain">
         </div>
-        <div id="pilih-menu-placeholder" class="w-full text-center py-20 bg-[#32366A] border-2 border-dashed border-[#AAA0BB] rounded-md shadow-md text-[#E8E2D4] max-w-4xl">
+        
+        <div id="pilih-menu-placeholder" class="w-full text-center py-20 bg-[#242752] border-2 border-dashed border-[#AAA0BB] rounded-md shadow-md text-[#E8E2D4] max-w-4xl">
             Pilih menu di sebelah kiri untuk melihat detail.
         </div>
 
+        <!-- Private Rooms Section -->
         <div id="private-rooms-section" class="w-full max-w-4xl mt-2 hidden transition-all duration-300 ease-in-out transform scale-95 opacity-0 bg-[#242752] border-2 border-[#1A1A3A] rounded-md shadow-xl p-6 text-[#FFFFF6]">
             <h3 class="text-2xl font-bold text-[#B57DDA] border-b border-[#41478B] pb-2 mb-6">Private Rooms</h3>
             
@@ -127,6 +174,7 @@ $presetItems   = avatar_presets_list();
             </div>
         </div>
 
+        <!-- Join Room Section -->
         <div id="join-room-section" class="w-full max-w-4xl mt-2 hidden transition-all duration-300 ease-in-out transform scale-95 opacity-0 bg-[#242752] border-2 border-[#1A1A3A] rounded-md shadow-xl p-6 text-[#FFFFF6]">
             <h3 class="text-2xl font-bold border-b pb-2 mb-6 border-[#41478B] text-[#B57DDA]">Join Room Selection</h3>
             
@@ -143,10 +191,28 @@ $presetItems   = avatar_presets_list();
             </div>
         </div>
 
+        <!-- Settings Section -->
         <div id="setting-section" class="w-full max-w-4xl mt-2 hidden transition-all duration-300 ease-in-out transform scale-95 opacity-0 bg-[#242752] border-2 border-[#1A1A3A] rounded-md shadow-xl p-6 text-[#FFFFF6]">
             <h3 class="text-2xl font-bold border-b pb-2 mb-4 border-[#41478B] text-[#B57DDA]">Settings</h3>
             
             <div class="flex flex-col gap-4">
+                <!-- FITUR BARU: BGM Audio Controller -->
+                <h4 class="font-extrabold text-sm border-b pb-1 border-[#41478B] text-[#AAA0BB]">Audio Settings</h4>
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-[#1A1A3A] p-4 border-2 border-[#41478B] rounded">
+                    <div class="flex items-center gap-3 w-full sm:w-auto">
+                        <button type="button" id="bgm-toggle-btn" class="bg-[#B57DDA] hover:bg-[#9C62C3] text-[#1A1A3A] font-black px-4 py-2 text-xs border border-[#1A1A3A] rounded shadow-[2px_2px_0_0_rgba(26,26,58,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all">
+                            🎵 Mute BGM
+                        </button>
+                        <span id="bgm-status-text" class="text-xs text-[#E8E2D4] font-semibold">Playing at 30%</span>
+                    </div>
+                    <div class="flex items-center gap-2 w-full sm:w-64">
+                        <span class="text-xs text-[#AAA0BB]">Vol:</span>
+                        <input type="range" id="bgm-volume-slider" min="0" max="1" step="0.05" value="0.3" class="w-full h-2 bg-[#32366A] rounded-lg appearance-none cursor-pointer accent-[#B57DDA]">
+                    </div>
+                </div>
+
+                <hr class="my-1 border-t border-[#41478B]">
+
                 <h4 class="font-extrabold text-sm border-b pb-1 border-[#41478B] text-[#AAA0BB]">Edit Profile</h4>
                 <form method="post" action="profile_update.php" enctype="multipart/form-data" class="flex flex-col gap-3" id="profile-form">
                     <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
@@ -217,11 +283,12 @@ $presetItems   = avatar_presets_list();
                 <a href="logout.php" class="w-full text-center bg-[#AAA0BB] text-[#1A1A3A] py-1 rounded font-bold text-sm hover:bg-[#E8E2D4] transition-colors border border-[#1A1A3A]">↪ Logout</a>
             </div>
         </div>
-<!-- about -->
-       <div id="about-section" class="w-full max-w-4xl mt-4 hidden transition-all duration-300 ease-in-out transform scale-95 opacity-0 bg-gray-300 border-3 border-gray-900 rounded-sm shadow-[6px_6px_0px_0px_rgba(17,24,39,1)] p-6 text-gray-800">
-            <h3 class="text-2xl font-black border-b-3 pb-2 mb-4 border-gray-900 text-gray-900">About</h3>
+
+        <!-- About Section -->
+        <div id="about-section" class="w-full max-w-4xl mt-4 hidden transition-all duration-300 ease-in-out transform scale-95 opacity-0 bg-[#242752] border-2 border-[#1A1A3A] rounded shadow-[4px_4px_0px_0px_rgba(26,26,58,1)] p-6 text-[#E8E2D4]">
+            <h3 class="text-2xl font-black border-b-2 pb-2 mb-4 border-[#1A1A3A] text-[#B57DDA]">About</h3>
             
-            <p class="text-sm text-gray-700 leading-relaxed font-medium mb-6">
+            <p class="text-sm leading-relaxed font-medium mb-6 text-[#E8E2D4]">
                 Tako Let's Eat! adalah game party multiplayer kompetitif yang random untuk 1 hingga 4
                 pemain. Di sini, para Takodachi yang kelaparan harus saling sikut demi memperebutkan
                 objek makanan yang muncul di arena. Persaingan berjalan dinamis karena setiap objek
@@ -229,56 +296,60 @@ $presetItems   = avatar_presets_list();
                 efek Freeze yang menghentikan pergerakan, hingga manipulasi poin yang bisa mengubah
                 jalannya pertandingan. Gunakan strategi terbaikmu, sabotase pemain lain, dan jadilah
                 Takodachi paling kenyang di arena!
-
             </p>
 
-           <div class="border-t-2 border-dashed border-gray-600 pt-6 mt-6">
-                <h4 class="text-lg font-black text-gray-900 mb-4 uppercase tracking-wider">The Developers</h4>
+            <div class="border-t-2 border-dashed border-[#41478B] pt-6 mt-6">
+                <h4 class="text-lg font-black text-[#B57DDA] mb-4 uppercase tracking-wider">The Developers</h4>
                 
                 <div class="flex overflow-x-auto md:grid md:grid-cols-2 gap-6 px-2 pt-2 pb-6 snap-x snap-mandatory scrollbar-none md:overflow-x-visible">
                     
-                    <button type="button" class="flex items-center text-left gap-4 bg-gray-100 p-4 border-2 border-gray-900 rounded-none shadow-[4px_4px_0px_0px_rgba(17,24,39,1)] w-[320px] md:w-full flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(17,24,39,1)] focus:outline-none">
-                        <img src="img/profile/aldi.webp" alt="Profile Dev 1" class="w-16 h-16 border-2 border-gray-900 object-cover rounded-none flex-shrink-0" />
+                    <!-- Dev 1 -->
+                    <button type="button" class="flex items-center text-left gap-4 bg-[#1A1A3A] p-4 border-2 border-[#41478B] rounded shadow-[4px_4px_0px_0px_rgba(26,26,58,1)] w-[320px] md:w-full flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(26,26,58,1)] focus:outline-none text-[#E8E2D4]">
+                        <img src="img/profile/aldi.webp" alt="Profile Dev 1" class="w-16 h-16 border-2 border-[#1A1A3A] object-cover rounded flex-shrink-0" />
                         <div>
-                            <h5 class="font-bold text-base text-gray-900 leading-tight">Ahmad Aldy Noor Fadhillah</h5>
-                            <p class="text-xs font-black text-purple-700 uppercase tracking-wide mb-1">Frontend / Lead Designer</p>
-                            <p class="text-xs text-gray-600 leading-tight">Buzzer Tailwindcss.</p>
+                            <h5 class="font-bold text-base text-[#FFFFF6] leading-tight">Ahmad Aldy Noor Fadhillah</h5>
+                            <p class="text-xs font-black text-[#B57DDA] uppercase tracking-wide mb-1">Frontend / Lead Designer</p>
+                            <p class="text-xs text-[#AAA0BB] leading-tight">Buzzer Tailwindcss.</p>
                         </div>
                     </button>
 
-                    <button type="button" class="flex items-center text-left gap-4 bg-gray-100 p-4 border-2 border-gray-900 rounded-none shadow-[4px_4px_0px_0px_rgba(17,24,39,1)] w-[320px] md:w-full flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(17,24,39,1)] focus:outline-none">
-                        <img src="img/profile/hafi.webp" alt="Profile Dev 2" class="w-16 h-16 border-2 border-gray-900 object-cover rounded-none flex-shrink-0" />
+                    <!-- Dev 2 -->
+                    <button type="button" class="flex items-center text-left gap-4 bg-[#1A1A3A] p-4 border-2 border-[#41478B] rounded shadow-[4px_4px_0px_0px_rgba(26,26,58,1)] w-[320px] md:w-full flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(26,26,58,1)] focus:outline-none text-[#E8E2D4]">
+                        <img src="img/profile/hafi.webp" alt="Profile Dev 2" class="w-16 h-16 border-2 border-[#1A1A3A] object-cover rounded flex-shrink-0" />
                         <div>
-                            <h5 class="font-bold text-base text-gray-900 leading-tight">Muhammad Hafi Yudhani</h5>
-                            <p class="text-xs font-black text-emerald-700 uppercase tracking-wide mb-1">Backend / Socket / Game Logic</p>
-                            <p class="text-xs text-gray-600 leading-tight">Penggendong tim.</p>
+                            <h5 class="font-bold text-base text-[#FFFFF6] leading-tight">Muhammad Hafi Yudhani</h5>
+                            <p class="text-xs font-black text-emerald-400 uppercase tracking-wide mb-1">Backend / Socket / Game Logic</p>
+                            <p class="text-xs text-[#AAA0BB] leading-tight">Penggendong tim.</p>
                         </div>
                     </button>
 
-                    <button type="button" class="flex items-center text-left gap-4 bg-gray-100 p-4 border-2 border-gray-900 rounded-none shadow-[4px_4px_0px_0px_rgba(17,24,39,1)] w-[320px] md:w-full flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(17,24,39,1)] focus:outline-none">
-                        <img src="img/profile/rafa.webp" alt="Profile Dev 3" class="w-16 h-16 border-2 border-gray-900 object-cover rounded-none flex-shrink-0" />
+                    <!-- Dev 3 -->
+                    <button type="button" class="flex items-center text-left gap-4 bg-[#1A1A3A] p-4 border-2 border-[#41478B] rounded shadow-[4px_4px_0px_0px_rgba(26,26,58,1)] w-[320px] md:w-full flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(26,26,58,1)] focus:outline-none text-[#E8E2D4]">
+                        <img src="img/profile/rafa.webp" alt="Profile Dev 3" class="w-16 h-16 border-2 border-[#1A1A3A] object-cover rounded flex-shrink-0" />
                         <div>
-                            <h5 class="font-bold text-base text-gray-900 leading-tight">Muhammad Rafa Farsha Irawan</h5>
-                            <p class="text-xs font-black text-blue-700 uppercase tracking-wide mb-1">Frontend / UI/UX Designer</p>
-                            <p class="text-xs text-gray-600 leading-tight">Telkomsel provider yahudi.</p>
+                            <h5 class="font-bold text-base text-[#FFFFF6] leading-tight">Muhammad Rafa Farsha Irawan</h5>
+                            <p class="text-xs font-black text-blue-400 uppercase tracking-wide mb-1">Frontend / UI/UX Designer</p>
+                            <p class="text-xs text-[#AAA0BB] leading-tight">Telkomsel provider yahudi.</p>
                         </div>
                     </button>
 
-                    <button type="button" class="flex items-center text-left gap-4 bg-gray-100 p-4 border-2 border-gray-900 rounded-none shadow-[4px_4px_0px_0px_rgba(17,24,39,1)] w-[320px] md:w-full flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(17,24,39,1)] focus:outline-none">
-                        <img src="img/profile/riyadh.webp" alt="Profile Dev 4" class="w-16 h-16 border-2 border-gray-900 object-cover rounded-none flex-shrink-0" />
+                    <!-- Dev 4 -->
+                    <button type="button" class="flex items-center text-left gap-4 bg-[#1A1A3A] p-4 border-2 border-[#41478B] rounded shadow-[4px_4px_0px_0px_rgba(26,26,58,1)] w-[320px] md:w-full flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(26,26,58,1)] focus:outline-none text-[#E8E2D4]">
+                        <img src="img/profile/riyadh.webp" alt="Profile Dev 4" class="w-16 h-16 border-2 border-[#1A1A3A] object-cover rounded flex-shrink-0" />
                         <div>
-                            <h5 class="font-bold text-base text-gray-900 leading-tight">Muhammad Riyadh Najahi</h5>
-                            <p class="text-xs font-black text-amber-700 uppercase tracking-wide mb-1">Frontend</p>
-                            <p class="text-xs text-gray-600 leading-tight">Kyni ah.</p>
+                            <h5 class="font-bold text-base text-[#FFFFF6] leading-tight">Muhammad Riyadh Najahi</h5>
+                            <p class="text-xs font-black text-amber-400 uppercase tracking-wide mb-1">Frontend</p>
+                            <p class="text-xs text-[#AAA0BB] leading-tight">Kyni ah.</p>
                         </div>
                     </button>
 
-                    <button type="button" class="flex items-center text-left gap-4 bg-gray-100 p-4 border-2 border-gray-900 rounded-none shadow-[4px_4px_0px_0px_rgba(17,24,39,1)] w-[320px] md:w-full md:col-span-2 max-w-md md:mx-auto flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(17,24,39,1)] focus:outline-none">
-                        <img src="img/profile/raihan.webp" alt="Profile Dev 5" class="w-16 h-16 border-2 border-gray-900 object-cover rounded-none flex-shrink-0" />
+                    <!-- Dev 5 -->
+                    <button type="button" class="flex items-center text-left gap-4 bg-[#1A1A3A] p-4 border-2 border-[#41478B] rounded shadow-[4px_4px_0px_0px_rgba(26,26,58,1)] w-[320px] md:w-full md:col-span-2 max-w-md md:mx-auto flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(26,26,58,1)] focus:outline-none text-[#E8E2D4]">
+                        <img src="img/profile/raihan.webp" alt="Profile Dev 5" class="w-16 h-16 border-2 border-[#1A1A3A] object-cover rounded flex-shrink-0" />
                         <div>
-                            <h5 class="font-bold text-base text-gray-900 leading-tight">Muhammad Raihan Ardhani</h5>
-                            <p class="text-xs font-black text-rose-700 uppercase tracking-wide mb-1">Statistik & Analisis Data</p>
-                            <p class="text-xs text-gray-600 leading-tight">Mafia Leader Astambul Company.</p>
+                            <h5 class="font-bold text-base text-[#FFFFF6] leading-tight">Muhammad Raihan Ardhani</h5>
+                            <p class="text-xs font-black text-rose-400 uppercase tracking-wide mb-1">Statistik &amp; Analisis Data</p>
+                            <p class="text-xs text-[#AAA0BB] leading-tight">Mafia Leader Astambul Company.</p>
                         </div>
                     </button>
 
@@ -289,8 +360,9 @@ $presetItems   = avatar_presets_list();
 
 </main>
 
-<div class="fixed bottom-0 right-0 w-80 h-80 z-0 pointer-events-none hidden md:block animate-peep overflow-hidden">
-    <img src="img/ssrb.png" alt="SSRB Mascot" class="w-full h-full object-contain origin-bottom">
+<!-- Maskot Tako Berjalan Bolak-Balik (Mascot Layer z-0) -->
+<div class="fixed -bottom-5 left-0 w-44 h-44 z-0 pointer-events-none hidden md:block animate-tako-walk overflow-hidden">
+    <img src="img/takomaskot.png" alt="Tako Mascot" class="w-full h-full object-contain origin-bottom">
 </div>
 
 <script>
@@ -307,8 +379,51 @@ document.addEventListener("DOMContentLoaded", function() {
     const bgm = document.getElementById("lobby-bgm");
     bgm.volume = 0.3; 
 
+    // === LOGIKA BARU: AUDIO KONTROL UTAMA ===
+    const volumeSlider = document.getElementById("bgm-volume-slider");
+    const toggleBtn = document.getElementById("bgm-toggle-btn");
+    const statusText = document.getElementById("bgm-status-text");
+    let currentSavedVolume = 0.3;
+
+    // Fungsi update UI status audio
+    function updateAudioUI() {
+        if (bgm.muted || bgm.volume === 0) {
+            toggleBtn.innerText = "🔇 Unmute BGM";
+            toggleBtn.classList.replace("bg-[#B57DDA]", "bg-[#AAA0BB]");
+            statusText.innerText = "Muted";
+        } else {
+            toggleBtn.innerText = "🎵 Mute BGM";
+            toggleBtn.classList.replace("bg-[#AAA0BB]", "bg-[#B57DDA]");
+            statusText.innerText = `Playing at ${Math.round(bgm.volume * 100)}%`;
+        }
+    }
+
+    // Handler Slider Volume
+    if (volumeSlider) {
+        volumeSlider.addEventListener("input", function() {
+            bgm.volume = this.value;
+            if (this.value > 0) {
+                bgm.muted = false;
+                currentSavedVolume = this.value;
+            }
+            updateAudioUI();
+        });
+    }
+
+    // Handler Tombol Mute / Unmute
+    if (toggleBtn) {
+        toggleBtn.addEventListener("click", function() {
+            bgm.muted = !bgm.muted;
+            if (!bgm.muted && bgm.volume === 0) {
+                bgm.volume = currentSavedVolume;
+                if (volumeSlider) volumeSlider.value = currentSavedVolume;
+            }
+            updateAudioUI();
+        });
+    }
+
     const startAudio = () => {
-        bgm.play().catch(err => console.log("Autoplay didukung interaksi pertama."));
+        bgm.play().then(() => updateAudioUI()).catch(err => console.log("Autoplay didukung interaksi pertama."));
         document.removeEventListener("click", startAudio);
     };
     document.addEventListener("click", startAudio);

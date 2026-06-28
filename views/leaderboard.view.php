@@ -1,7 +1,10 @@
-<div class="w-full max-w-[1100px] mx-auto">
-    <div class="h-section !max-w-full flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 !p-4">
-        <h2 class="m-0 flex-1 font-extrabold text-xl sm:text-2xl tracking-wide">🏆 Global Leaderboard</h2>
-        <a href="lobby.php" class="btn whitespace-nowrap shrink-0 duration-100 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all text-center cursor-pointer rounded">← Kembali ke Lobby</a>
+<div class="w-full max-w-[1100px] mx-auto text-[#FFFFF6]">
+    <!-- Judul & Tombol Kembali (Disesuaikan dengan palet & efek Neubrutalism) -->
+    <div class="h-section !max-w-full flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 !p-4 bg-[#242752] border-2 border-[#1A1A3A] rounded shadow-[4px_4px_0_0_rgba(26,26,58,1)]">
+        <h2 class="m-0 flex-1 font-extrabold text-xl sm:text-2xl tracking-wide text-[#B57DDA]">🏆 Global Leaderboard</h2>
+        <a href="lobby.php" class="whitespace-nowrap shrink-0 bg-[#B57DDA] text-[#1A1A3A] font-black py-2 px-4 border-2 border-[#1A1A3A] shadow-[2px_2px_0_0_rgba(26,26,58,1)] hover:shadow-none active:translate-x-0.5 active:translate-y-0.5 transition-all duration-100 text-center cursor-pointer rounded text-sm">
+            ← Kembali ke Lobby
+        </a>
     </div>
 
     <!-- Filter Batas Difficulty & Durasi -->
@@ -13,7 +16,6 @@
                 $diffLabels = ['easy' => 'EASY', 'normal' => 'NORMAL', 'hard' => 'HARD', 'indonesian' => 'INDONESIAN'];
                 foreach($diffLabels as $k => $label): 
                     $isActive = $currentDiff === $k;
-                    // Aktif: Bright Lavender, Tidak Aktif: French Blue Tua
                     $activeClass = $isActive ? 'bg-[#B57DDA] text-[#1A1A3A]' : 'bg-[#1A1A3A] text-[#E8E2D4] hover:bg-[#41478B] hover:text-[#FFFFF6]';
                 ?>
                     <a href="?diff=<?= $k ?>&dur=<?= $currentDuration ?>" class="px-4 py-2 border-2 border-[#1A1A3A] font-extrabold text-sm rounded shadow-[2px_2px_0_0_rgba(26,26,58,1)] transition-colors <?= $activeClass ?>">
@@ -29,7 +31,6 @@
                 $durations = [30 => '30 DETIK', 60 => '60 DETIK', 90 => '90 DETIK'];
                 foreach($durations as $dVal => $dLabel): 
                     $isActive = $currentDuration === $dVal;
-                    // Aktif: Bright Lavender, Tidak Aktif: French Blue Tua
                     $activeClass = $isActive ? 'bg-[#B57DDA] text-[#1A1A3A]' : 'bg-[#1A1A3A] text-[#E8E2D4] hover:bg-[#41478B] hover:text-[#FFFFF6]';
                 ?>
                     <a href="?diff=<?= $currentDiff ?>&dur=<?= $dVal ?>" class="px-4 py-2 border-2 border-[#1A1A3A] font-extrabold text-sm rounded shadow-[2px_2px_0_0_rgba(26,26,58,1)] transition-colors <?= $activeClass ?>">
@@ -58,7 +59,6 @@
                     </thead>
                     <tbody class="bg-[#1A1A3A]">
                         <?php foreach($topScores as $i => $row): ?>
-                            <?php // Juara 1 mendapatkan highlight baris Bright Lavender tipis ?>
                             <tr class="<?= $i === 0 ? 'bg-[#B57DDA]/20 text-[#B57DDA] font-bold' : 'text-[#E8E2D4] border-b border-[#41478B]/30' ?>">
                                 <td class="p-2 border border-[#41478B]/50"><?= $i+1 ?></td>
                                 <td class="p-2 border border-[#41478B]/50"><?= e($row['player_label']) ?><?= $i === 0 ? ' 👑' : '' ?></td>
@@ -96,7 +96,6 @@
                     <tbody class="bg-[#1A1A3A]">
                         <?php foreach($topFastest as $i => $row): 
                             $change = (int)$row['change_after5_ms'];
-                            // Hijau palet kontras untuk lebih cepat, merah lembut untuk melambat
                             $changeColor = $change === 0 ? '' : ($change > 0 ? 'color:#FF9F80' : 'color:#4ADE80');
                             $changeTxt = $change === 0 ? '0 ms' : (($change > 0 ? '+' : '') . $change . ' ms' . ($change > 0 ? ' (melambat)' : ' (lebih cepat)'));
                         ?>
@@ -118,5 +117,3 @@
         <?php endif; ?>
     </div>
 </div>
-
-<?php include __DIR__ . '/footer.php'; ?>
