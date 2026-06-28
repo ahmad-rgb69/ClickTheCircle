@@ -17,7 +17,7 @@ $config = $config ?? require __DIR__ . '/../config.php';
     <script type="module" src="http://localhost:5173/resources/css/app.css"></script>
     <link rel="stylesheet" href="dist/assets/main-DIhpepuo.css ">
     
-    <link rel="icon" type="image/png" href="img/logo.png">
+    <link rel="icon" type="image/png" href="img/newlogo.png">
 
     <script>
     (function () {
@@ -40,22 +40,24 @@ $config = $config ?? require __DIR__ . '/../config.php';
   <div id="user-sidebar-backdrop" class="sidebar-backdrop" aria-hidden="true"></div>
   
   <!-- Sidebar -->
-  <aside id="user-sidebar" class="sidebar-container" aria-label="Player info sidebar">
-      
-      <button type="button" id="user-sidebar-close" class="absolute right-2 top-2 lg:hidden text-xl font-bold leading-none px-2 py-1" aria-label="Close profile">×</button>
+  <aside id="user-sidebar" class="sidebar-container bg-[#242752] border-r-2 border-[#1A1A3A] p-4" aria-label="Player info sidebar">
+     
+    <button type="button" id="user-sidebar-close" class="absolute right-2 top-2 lg:hidden text-xl font-bold leading-none px-2 py-1 text-[#FFFFF6]" aria-label="Close profile">×</button>
 
-      <div class="font-pixel text-xs text-white text-center bg-ink/80 border border-ink rounded-xl py-2"
-          style="text-shadow: 1px 1px 0 #000;">
-          PLAYER INFO
-      </div>
-      <div class="font-pixel text-xs text-white text-center bg-ink/80 border border-ink rounded-xl py-2"
-          style="text-shadow: 1px 1px 0 #000;">
-          <a href="statistik.php">Player Statistik 📈</a>
-      </div>
-      <div class="font-pixel text-xs text-black text-center bg-[#FFE5B4] border border-ink rounded-xl py-2 font-bold"
-          style="text-shadow: 1px 1px 0 rgba(255,255,255,0.8);">
-          <a href="leaderboard.php" class="block w-full h-full">Leaderboard 🏆</a>
-      </div>
+    <div class="font-pixel text-xs text-[#FFFFF6] text-center bg-[#1A1A3A]/80 border border-[#41478B] rounded-xl py-2"
+        style="text-shadow: 1px 1px 0 #000;">
+        PLAYER INFO
+    </div>
+
+    <div class="font-pixel text-xs text-[#FFFFF6] text-center bg-[#1A1A3A]/80 border border-[#41478B] rounded-xl py-2 mt-2"
+        style="text-shadow: 1px 1px 0 #000;">
+        <a href="statistik.php" class="hover:text-[#B57DDA] transition-colors">Player Statistik 📈</a>
+    </div>
+
+    <div class="font-pixel text-xs text-[#1A1A3A] text-center bg-[#B57DDA] border border-[#1A1A3A] rounded-xl py-2 font-bold mt-2 shadow-[2px_2px_0_0_rgba(26,26,58,1)]"
+        style="text-shadow: 1px 1px 0 rgba(255,255,255,0.4);">
+        <a href="leaderboard.php" class="block w-full h-full font-black">Leaderboard 🏆</a>
+    </div>
 
       <!-- Logged In Box -->
       <div class="flex flex-col items-center gap-2 bg-control border border-ink rounded-xl p-3 shadow-inset1">
