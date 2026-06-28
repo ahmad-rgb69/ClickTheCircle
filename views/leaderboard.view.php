@@ -1,10 +1,7 @@
-<div class="w-full max-w-[1100px] mx-auto text-[#FFFFF6]">
-    <!-- Judul & Tombol Kembali -->
-    <div class="h-section !max-w-full flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 !p-4 bg-[#242752] border-2 border-[#1A1A3A] rounded shadow-[4px_4px_0_0_rgba(26,26,58,1)]">
-        <h2 class="m-0 flex-1 font-extrabold text-xl sm:text-2xl tracking-wide text-[#B57DDA]">🏆 Global Leaderboard</h2>
-        <a href="lobby.php" class="whitespace-nowrap shrink-0 transition-all duration-100 bg-[#B57DDA] text-[#1A1A3A] font-black py-2 px-4 border-2 border-[#1A1A3A] shadow-[2px_2px_0_0_rgba(26,26,58,1)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 rounded text-sm">
-            ← Kembali ke Lobby
-        </a>
+<div class="w-full max-w-[1100px] mx-auto">
+    <div class="h-section !max-w-full flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 !p-4">
+        <h2 class="m-0 flex-1 font-extrabold text-xl sm:text-2xl tracking-wide">🏆 Global Leaderboard</h2>
+        <a href="lobby.php" class="btn whitespace-nowrap shrink-0 duration-100 active:shadow-none active:translate-x-1 active:translate-y-1 transition-all text-center cursor-pointer rounded">← Kembali ke Lobby</a>
     </div>
 
     <!-- Filter Batas Difficulty & Durasi -->
