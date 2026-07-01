@@ -301,59 +301,49 @@ $presetItems   = avatar_presets_list();
             <div class="border-t-2 border-dashed border-[#41478B] pt-6 mt-6">
                 <h4 class="text-lg font-black text-[#B57DDA] mb-4 uppercase tracking-wider">The Developers</h4>
                 
-                <div class="flex overflow-x-auto md:grid md:grid-cols-2 gap-6 px-2 pt-2 pb-6 snap-x snap-mandatory scrollbar-none md:overflow-x-visible">
-                    
-                    <!-- Dev 1 -->
-                    <button type="button" class="flex items-center text-left gap-4 bg-[#1A1A3A] p-4 border-2 border-[#41478B] rounded shadow-[4px_4px_0px_0px_rgba(26,26,58,1)] w-[320px] md:w-full flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(26,26,58,1)] focus:outline-none text-[#E8E2D4]">
-                        <img src="img/profile/aldi.webp" alt="Profile Dev 1" class="w-16 h-16 border-2 border-[#1A1A3A] object-cover rounded flex-shrink-0" />
-                        <div>
-                            <h5 class="font-bold text-base text-[#FFFFF6] leading-tight">Ahmad Aldy Noor Fadhillah</h5>
-                            <p class="text-xs font-black text-[#B57DDA] uppercase tracking-wide mb-1">Frontend / Lead Designer</p>
-                            <p class="text-xs text-[#AAA0BB] leading-tight">Buzzer Tailwindcss.</p>
-                        </div>
-                    </button>
+                <!-- Featured Dev (yang lagi dipilih) -->
+<div id="dev-featured" class="mb-6 bg-[#1A1A3A] p-5 border-2 border-[#B57DDA] rounded shadow-[4px_4px_0px_0px_rgba(181,125,218,1)] flex flex-col md:flex-row items-center gap-5 transition-all">
+    <img id="dev-featured-img" src="img/profile/aldi.webp" alt="Featured Dev" class="w-28 h-28 md:w-32 md:h-32 border-2 border-[#1A1A3A] object-cover rounded flex-shrink-0" />
+    <div class="text-center md:text-left">
+        <h5 id="dev-featured-name" class="font-black text-xl text-[#FFFFF6] leading-tight mb-1">Ahmad Aldy Noor Fadhillah</h5>
+        <p id="dev-featured-role" class="text-sm font-black uppercase tracking-wide mb-2 text-[#B57DDA]">Frontend / Lead Designer</p>
+        <p id="dev-featured-status" class="text-sm text-[#E8E2D4] leading-snug italic">"Buzzer Tailwindcss."</p>
+    </div>
+</div>
 
-                    <!-- Dev 2 -->
-                    <button type="button" class="flex items-center text-left gap-4 bg-[#1A1A3A] p-4 border-2 border-[#41478B] rounded shadow-[4px_4px_0px_0px_rgba(26,26,58,1)] w-[320px] md:w-full flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(26,26,58,1)] focus:outline-none text-[#E8E2D4]">
-                        <img src="img/profile/hafi.webp" alt="Profile Dev 2" class="w-16 h-16 border-2 border-[#1A1A3A] object-cover rounded flex-shrink-0" />
-                        <div>
-                            <h5 class="font-bold text-base text-[#FFFFF6] leading-tight">Muhammad Hafi Yudhani</h5>
-                            <p class="text-xs font-black text-emerald-400 uppercase tracking-wide mb-1">Backend / Socket / Game Logic</p>
-                            <p class="text-xs text-[#AAA0BB] leading-tight">Penggendong tim.</p>
-                        </div>
-                    </button>
+<!-- Anggota lain (klik untuk promote ke atas) -->
+<div id="dev-thumbs" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+    <button type="button" class="dev-thumb flex flex-col items-center gap-2 bg-[#1A1A3A] p-3 border-2 border-[#41478B] rounded shadow-[3px_3px_0px_0px_rgba(26,26,58,1)] cursor-pointer transition-all hover:border-[#B57DDA] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none focus:outline-none"
+        data-name="Ahmad Aldy Noor Fadhillah" data-role="Frontend / Lead Designer" data-status="Buzzer Tailwindcss." data-img="img/profile/aldi.webp" data-color="#B57DDA">
+        <img src="img/profile/aldi.webp" alt="Aldy" class="w-14 h-14 border-2 border-[#1A1A3A] object-cover rounded" />
+        <span class="text-xs font-bold text-[#FFFFF6] text-center leading-tight">Aldy</span>
+    </button>
 
-                    <!-- Dev 3 -->
-                    <button type="button" class="flex items-center text-left gap-4 bg-[#1A1A3A] p-4 border-2 border-[#41478B] rounded shadow-[4px_4px_0px_0px_rgba(26,26,58,1)] w-[320px] md:w-full flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(26,26,58,1)] focus:outline-none text-[#E8E2D4]">
-                        <img src="img/profile/rafa.webp" alt="Profile Dev 3" class="w-16 h-16 border-2 border-[#1A1A3A] object-cover rounded flex-shrink-0" />
-                        <div>
-                            <h5 class="font-bold text-base text-[#FFFFF6] leading-tight">Muhammad Rafa Farsha Irawan</h5>
-                            <p class="text-xs font-black text-blue-400 uppercase tracking-wide mb-1">Frontend / UI/UX Designer</p>
-                            <p class="text-xs text-[#AAA0BB] leading-tight">Telkomsel provider yahudi.</p>
-                        </div>
-                    </button>
+    <button type="button" class="dev-thumb flex flex-col items-center gap-2 bg-[#1A1A3A] p-3 border-2 border-[#41478B] rounded shadow-[3px_3px_0px_0px_rgba(26,26,58,1)] cursor-pointer transition-all hover:border-[#B57DDA] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none focus:outline-none"
+        data-name="Muhammad Hafi Yudhani" data-role="Backend / Socket / Game Logic" data-status="Penggendong tim." data-img="img/profile/hafi.webp" data-color="#34d399">
+        <img src="img/profile/hafi.webp" alt="Hafi" class="w-14 h-14 border-2 border-[#1A1A3A] object-cover rounded" />
+        <span class="text-xs font-bold text-[#FFFFF6] text-center leading-tight">Hafi</span>
+    </button>
 
-                    <!-- Dev 4 -->
-                    <button type="button" class="flex items-center text-left gap-4 bg-[#1A1A3A] p-4 border-2 border-[#41478B] rounded shadow-[4px_4px_0px_0px_rgba(26,26,58,1)] w-[320px] md:w-full flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(26,26,58,1)] focus:outline-none text-[#E8E2D4]">
-                        <img src="img/profile/riyadh.webp" alt="Profile Dev 4" class="w-16 h-16 border-2 border-[#1A1A3A] object-cover rounded flex-shrink-0" />
-                        <div>
-                            <h5 class="font-bold text-base text-[#FFFFF6] leading-tight">Muhammad Riyadh Najahi</h5>
-                            <p class="text-xs font-black text-amber-400 uppercase tracking-wide mb-1">Frontend</p>
-                            <p class="text-xs text-[#AAA0BB] leading-tight">Kyni ah.</p>
-                        </div>
-                    </button>
+    <button type="button" class="dev-thumb flex flex-col items-center gap-2 bg-[#1A1A3A] p-3 border-2 border-[#41478B] rounded shadow-[3px_3px_0px_0px_rgba(26,26,58,1)] cursor-pointer transition-all hover:border-[#B57DDA] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none focus:outline-none"
+        data-name="Muhammad Rafa Farsha Irawan" data-role="Frontend / UI/UX Designer" data-status="Telkomsel provider yahudi." data-img="img/profile/rafa.webp" data-color="#60a5fa">
+        <img src="img/profile/rafa.webp" alt="Rafa" class="w-14 h-14 border-2 border-[#1A1A3A] object-cover rounded" />
+        <span class="text-xs font-bold text-[#FFFFF6] text-center leading-tight">Rafa</span>
+    </button>
 
-                    <!-- Dev 5 -->
-                    <button type="button" class="flex items-center text-left gap-4 bg-[#1A1A3A] p-4 border-2 border-[#41478B] rounded shadow-[4px_4px_0px_0px_rgba(26,26,58,1)] w-[320px] md:w-full md:col-span-2 max-w-md md:mx-auto flex-shrink-0 snap-center cursor-pointer transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_rgba(26,26,58,1)] focus:outline-none text-[#E8E2D4]">
-                        <img src="img/profile/raihan.webp" alt="Profile Dev 5" class="w-16 h-16 border-2 border-[#1A1A3A] object-cover rounded flex-shrink-0" />
-                        <div>
-                            <h5 class="font-bold text-base text-[#FFFFF6] leading-tight">Muhammad Raihan Ardhani</h5>
-                            <p class="text-xs font-black text-rose-400 uppercase tracking-wide mb-1">Statistik &amp; Analisis Data</p>
-                            <p class="text-xs text-[#AAA0BB] leading-tight">Mafia Leader Astambul Company.</p>
-                        </div>
-                    </button>
+    <button type="button" class="dev-thumb flex flex-col items-center gap-2 bg-[#1A1A3A] p-3 border-2 border-[#41478B] rounded shadow-[3px_3px_0px_0px_rgba(26,26,58,1)] cursor-pointer transition-all hover:border-[#B57DDA] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none focus:outline-none"
+        data-name="Muhammad Riyadh Najahi" data-role="Frontend" data-status="Kyni ah." data-img="img/profile/riyadh.webp" data-color="#fbbf24">
+        <img src="img/profile/riyadh.webp" alt="Riyadh" class="w-14 h-14 border-2 border-[#1A1A3A] object-cover rounded" />
+        <span class="text-xs font-bold text-[#FFFFF6] text-center leading-tight">Riyadh</span>
+    </button>
 
-                </div>
+    <button type="button" class="dev-thumb flex flex-col items-center gap-2 bg-[#1A1A3A] p-3 border-2 border-[#41478B] rounded shadow-[3px_3px_0px_0px_rgba(26,26,58,1)] cursor-pointer transition-all hover:border-[#B57DDA] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none focus:outline-none"
+        data-name="Muhammad Raihan Ardhani" data-role="Statistik & Analisis Data" data-status="Mafia Leader Astambul Company." data-img="img/profile/raihan.webp" data-color="#fb7185">
+        <img src="img/profile/raihan.webp" alt="Raihan" class="w-14 h-14 border-2 border-[#1A1A3A] object-cover rounded" />
+        <span class="text-xs font-bold text-[#FFFFF6] text-center leading-tight">Raihan</span>
+    </button>
+</div>
+
             </div>
         </div>      
     </div>
@@ -479,6 +469,37 @@ document.addEventListener("DOMContentLoaded", function() {
     if (joinBtn) joinBtn.addEventListener("click", () => toggleSection(joinSection));
     if (settingBtn) settingBtn.addEventListener("click", () => toggleSection(settingSection));
     if (aboutBtn) aboutBtn.addEventListener("click", () => toggleSection(aboutSection));
+    
+    const featImg   = document.getElementById("dev-featured-img");
+    const featName  = document.getElementById("dev-featured-name");
+    const featRole  = document.getElementById("dev-featured-role");
+    const featStat  = document.getElementById("dev-featured-status");
+    const featBox   = document.getElementById("dev-featured");
+    const thumbs    = document.querySelectorAll(".dev-thumb");
+
+    function setActive(btn) {
+        featImg.src        = btn.dataset.img;
+        featImg.alt        = btn.dataset.name;
+        featName.textContent = btn.dataset.name;
+        featRole.textContent = btn.dataset.role;
+        featRole.style.color = btn.dataset.color;
+        featStat.textContent = '"' + btn.dataset.status + '"';
+        featBox.style.borderColor = btn.dataset.color;
+        featBox.style.boxShadow   = "4px 4px 0px 0px " + btn.dataset.color;
+
+        thumbs.forEach(t => {
+            t.classList.remove("border-[#B57DDA]");
+            t.classList.add("border-[#41478B]");
+            t.style.display = "";
+        });
+        btn.style.display = "none"; // sembunyikan yang lagi ditampilkan di featured
+    }
+
+    thumbs.forEach(btn => btn.addEventListener("click", () => setActive(btn)));
+
+    // set default = Aldy
+    if (thumbs.length) setActive(thumbs[0]);
+
 });
 
 (function(){
